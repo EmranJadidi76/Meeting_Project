@@ -1,0 +1,22 @@
+﻿using Microsoft.AspNetCore.Mvc;
+using System;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.Text;
+
+namespace DataLayer.ViewModels.User
+{
+    public class RegisterViewModel
+    {
+        [Required(ErrorMessage = "لطفا رمز عبور خود را وارد نمایید")]
+        [StringLength(100, ErrorMessage = "تعداد کاراکتر ها بیشتر از حد مجاز می باشد")]
+        public string Password { get; set; }
+
+        [Compare("Password",ErrorMessage = "رمز عبور با تاییدش مغایرت دارد" )]
+        public string RePassword { get; set; }
+
+        [Required()]
+        [RegularExpression(@"[0-9]{10}+", ErrorMessage = "کدملی وارد شده معتبر نمی باشد")]
+        public string NationalCode { get; set; }
+    }
+}
