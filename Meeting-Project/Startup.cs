@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using System;
 using WebframeworkLayer.Configurations;
 
 namespace Meeting_Project
@@ -29,6 +30,14 @@ namespace Meeting_Project
             services.AddCollectionServices(Configuration);
 
             services.AddCustomIdentity(_siteSetting.IdentitySettings);
+
+            services.AddAuthentication()
+             .Services.ConfigureApplicationCookie(options =>
+             {
+                 options.SlidingExpiration = true;
+                 options.ExpireTimeSpan = TimeSpan.FromDays(90);
+             });
+
         }
 
 
@@ -39,9 +48,12 @@ namespace Meeting_Project
                 app.UseDeveloperExceptionPage();
             }
 
+
             app.UseRedirectConfigure();
 
             app.UseStaticFiles();
+
+            app.UseAuthentication();
 
             app.UseMvcWithDefaultRoute();
 

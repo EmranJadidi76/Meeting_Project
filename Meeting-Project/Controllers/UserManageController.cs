@@ -10,7 +10,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Meeting_Project.Controllers
 {
-    public class UserManageController : Controller
+    public class UserManageController : BaseController
     {
         #region DI
 

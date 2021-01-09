@@ -16,7 +16,7 @@ namespace WebframeworkLayer.Configurations
                 //Password Settings
                 identityOptions.Password.RequireDigit = settings.PasswordRequireDigit;
                 identityOptions.Password.RequiredLength = settings.PasswordRequiredLength;
-                identityOptions.Password.RequireNonAlphanumeric = settings.PasswordRequireNonAlphanumic; //#@!
+                identityOptions.Password.RequireNonAlphanumeric = settings.PasswordRequireNonAlphanumic; 
                 identityOptions.Password.RequireUppercase = settings.PasswordRequireUppercase;
                 identityOptions.Password.RequireLowercase = settings.PasswordRequireLowercase;
 

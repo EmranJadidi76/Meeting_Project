@@ -16,7 +16,6 @@ namespace DataLayer.ViewModels.User
         public string RePassword { get; set; }
 
         [Required()]
-        [RegularExpression(@"[0-9]{10}+", ErrorMessage = "کدملی وارد شده معتبر نمی باشد")]
         public string NationalCode { get; set; }
     }
 }

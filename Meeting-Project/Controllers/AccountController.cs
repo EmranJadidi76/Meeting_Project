@@ -11,17 +11,18 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Meeting_Project.Controllers
 {
-    public class AccountController : Controller
+    public class AccountController : BaseController
     {
         #region DI
 
         private readonly SignInManager<Users> _signInManager;
         private readonly UserManager<Users> _userManager;
-
-        public AccountController(SignInManager<Users> signInManager, UserManager<Users> userManager)
+        private readonly RoleManager<Roles> _roleManager;
+        public AccountController(SignInManager<Users> signInManager, UserManager<Users> userManager, RoleManager<Roles> roleManager)
         {
             _signInManager = signInManager;
             _userManager = userManager;
+            _roleManager = roleManager;
         }
 
 
@@ -105,8 +106,9 @@ namespace Meeting_Project.Controllers
 
                     if (resultCreatUser.Succeeded)
                     {
+                        await _userManager.AddToRoleAsync(user, "Admin");
                         await _signInManager.SignInAsync(user, false);
-                        return RedirectToAction("AuthorizePhoneNumber", "Account", new { sec = user.SecurityStamp });
+                        return RedirectToAction("Login");
                     }
                     else
                     {
