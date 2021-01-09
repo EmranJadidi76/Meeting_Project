@@ -11,7 +11,7 @@ using AutoMapper;
 using Microsoft.AspNetCore.Http;
 using DataLayer;
 
-namespace Service
+namespace ServiceLayer
 {
     public class GenericRepository<TEntity> where TEntity : class, IEntity
     {

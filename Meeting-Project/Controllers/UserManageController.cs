@@ -7,6 +7,7 @@ using DataLayer.Entities.User;
 using DataLayer.ViewModels.User;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using ServiceLayer.Repositories.User;
 
 namespace Meeting_Project.Controllers
 {
@@ -14,23 +15,19 @@ namespace Meeting_Project.Controllers
     {
         #region DI
 
-        private readonly SignInManager<Users> _signInManager;
-        private readonly UserManager<Users> _userManager;
+        private readonly UserRepository _userRepository;
 
-        public UserManageController(SignInManager<Users> signInManager, UserManager<Users> userManager)
+        public UserManageController(UserRepository userRepository)
         {
-            _signInManager = signInManager;
-            _userManager = userManager;
+            _userRepository = userRepository;
         }
         #endregion
 
-
-
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            var users = _userManager.Users.ToList();
+            var users =await _userRepository.GetAllUsers(this.UserId);
 
-            return Json(users);
+            return View(users);
         }
 
 
@@ -43,11 +40,11 @@ namespace Meeting_Project.Controllers
             {
                 var user = AutoMapper.Mapper.Map<Users>(model);
 
-                var userResult = await _userManager.FindByNameAsync(model.NationalCode);
+                var userResult = await _userRepository.UserManager.FindByNameAsync(model.NationalCode);
 
                 if (userResult == null)
                 {
-                    var resultCreatUser = await _userManager.CreateAsync(user, model.NationalCode);
+                    var resultCreatUser = await _userRepository.UserManager.CreateAsync(user, model.NationalCode);
 
                     if (resultCreatUser.Succeeded)
                     {

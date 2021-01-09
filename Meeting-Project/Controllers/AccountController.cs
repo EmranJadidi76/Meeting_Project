@@ -8,6 +8,7 @@ using DataLayer.ViewModels.User;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using ServiceLayer.Repositories.User;
 
 namespace Meeting_Project.Controllers
 {
@@ -15,14 +16,11 @@ namespace Meeting_Project.Controllers
     {
         #region DI
 
-        private readonly SignInManager<Users> _signInManager;
-        private readonly UserManager<Users> _userManager;
-        private readonly RoleManager<Roles> _roleManager;
-        public AccountController(SignInManager<Users> signInManager, UserManager<Users> userManager, RoleManager<Roles> roleManager)
+        private readonly UserRepository _userRepository;
+        
+        public AccountController(UserRepository userRepository)
         {
-            _signInManager = signInManager;
-            _userManager = userManager;
-            _roleManager = roleManager;
+            _userRepository = userRepository;
         }
 
 
@@ -42,7 +40,7 @@ namespace Meeting_Project.Controllers
         {
             if (ModelState.IsValid)
             {
-                var model = await _userManager.FindByNameAsync(userName);
+                var model = await _userRepository.UserManager.FindByNameAsync(userName);
 
                 if (model == null)
                 {
@@ -56,7 +54,7 @@ namespace Meeting_Project.Controllers
                     return RedirectToAction("Login");
                 }
 
-                var result = await _signInManager.PasswordSignInAsync(model, password, true, false);
+                var result = await _userRepository.SignInManager.PasswordSignInAsync(model, password, true, false);
 
                 if (result.Succeeded)
                 {
@@ -77,7 +75,7 @@ namespace Meeting_Project.Controllers
         [AllowAnonymous()]
         public async Task<IActionResult> Logout()
         {
-            await _signInManager.SignOutAsync();
+            await _userRepository.SignInManager.SignOutAsync();
             return RedirectToAction("Login");
         }
 
@@ -98,17 +96,16 @@ namespace Meeting_Project.Controllers
             {
                 var user = AutoMapper.Mapper.Map<Users>(model);
 
-                var userResult = await _userManager.FindByNameAsync(model.NationalCode);
+                var userResult = await _userRepository.UserManager.FindByNameAsync(model.NationalCode);
 
                 if (userResult == null)
                 {
-                    var resultCreatUser = await _userManager.CreateAsync(user, model.Password);
+                    var resultCreatUser = await _userRepository.UserManager.CreateAsync(user, model.Password);
 
                     if (resultCreatUser.Succeeded)
                     {
-                        await _userManager.AddToRoleAsync(user, "Admin");
-                        await _signInManager.SignInAsync(user, false);
-                        return RedirectToAction("Login");
+                        await _userRepository.SignInManager.SignInAsync(user, false);
+                        return Redirect("/");
                     }
                     else
                     {

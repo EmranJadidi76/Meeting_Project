@@ -2,7 +2,7 @@
 using DataLayer.Entities.User;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.DependencyInjection;
-using Service;
+using ServiceLayer;
 using System;
 
 namespace WebframeworkLayer.Configurations

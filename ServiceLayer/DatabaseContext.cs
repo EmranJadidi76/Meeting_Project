@@ -7,7 +7,7 @@ using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Service
+namespace ServiceLayer
 {
     public class DatabaseContext : IdentityDbContext<Users, Roles, int>
     {

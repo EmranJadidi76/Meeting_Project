@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Text;
 
 namespace DataLayer.Entities.User
@@ -13,11 +14,23 @@ namespace DataLayer.Entities.User
         }
         public string FirstName { get; set; }
         public string LastName { get; set; }
+
+        [NotMapped]
+        public string FullName
+        {
+            get
+            {
+                return FirstName + " " + LastName;
+            }
+        }
+
         public DateTime? CreateDate { get; set; }
         public bool IsActive { get; set; }
 
         public bool IsModerator { get; set; }
 
         public string NationalCode { get; set; }
+
+        //public int MyProperty { get; set; }
     }
 }

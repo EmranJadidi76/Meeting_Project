@@ -9,7 +9,6 @@ namespace Meeting_Project.Controllers
 {
     public class HomeController : BaseController
     {
-        [Authorize]
         public IActionResult Index()
         {
             return View();

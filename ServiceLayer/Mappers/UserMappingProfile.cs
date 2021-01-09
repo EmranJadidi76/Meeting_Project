@@ -13,9 +13,12 @@ namespace ServiceLayer.Mappers
         {
             CreateMap<Users, RegisterViewModel>().ReverseMap()
                  .ForMember(a => a.UserName, option => { option.MapFrom(b => b.NationalCode); })
-                 .ForMember(a=>a.IsActive , option => option.UseValue(true));
+                 .ForMember(a=>a.IsActive , option => option.UseValue(true))
+                 .ForMember(a=>a.IsModerator , option => option.UseValue(true));
             CreateMap<Users, CreateUserViewModel>().ReverseMap()
-                 .ForMember(a => a.UserName, option => { option.MapFrom(b => b.NationalCode); });
+                 .ForMember(a => a.UserName, option => { option.MapFrom(b => b.NationalCode); })
+                 .ForMember(a => a.IsActive, option => option.UseValue(true))
+                 .ForMember(a => a.IsModerator, option => option.UseValue(true));
         }
     }
 }

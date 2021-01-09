@@ -16,6 +16,7 @@
   </ItemGroup>
 
 	<ItemGroup>
+	  <Folder Include="Views\Meeting\" />
 	  <Folder Include="wwwroot\lib\" />
 	</ItemGroup>
 

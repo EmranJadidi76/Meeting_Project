@@ -63,7 +63,7 @@
                         </li>
                     </ul>
 
-                
+
 
                 </div><!-- end container -->
             </div><!-- end navbar -->
@@ -83,13 +83,7 @@
                     <h5><a href="#">@User.Identity.Name</a> </h5>
                     <ul class="list-inline">
                         <li>
-                            <a href="#">
-                                <i class="zmdi zmdi-settings"></i>
-                            </a>
-                        </li>
-
-                        <li>
-                            <a href="#" class="text-custom">
+                            <a href="/account/logout" class="text-custom">
                                 <i class="zmdi zmdi-power"></i>
                             </a>
                         </li>
@@ -231,9 +225,32 @@
     <!-- Dashboard init -->
     <script src="~/assets/pages/jquery.dashboard.js"></script>
 
+
+    <!-- Datatables-->
+    <script src="~/assets/plugins/datatables/jquery.dataTables.min.js"></script>
+    <script src="~/assets/plugins/datatables/dataTables.bootstrap.js"></script>
+    <script src="~/assets/plugins/datatables/dataTables.buttons.min.js"></script>
+    <script src="~/assets/plugins/datatables/buttons.bootstrap.min.js"></script>
+    <script src="~/assets/plugins/datatables/jszip.min.js"></script>
+    <script src="~/assets/plugins/datatables/pdfmake.min.js"></script>
+    <script src="~/assets/plugins/datatables/vfs_fonts.js"></script>
+    <script src="~/assets/plugins/datatables/buttons.html5.min.js"></script>
+    <script src="~/assets/plugins/datatables/buttons.print.min.js"></script>
+    <script src="~/assets/plugins/datatables/dataTables.fixedHeader.min.js"></script>
+    <script src="~/assets/plugins/datatables/dataTables.keyTable.min.js"></script>
+    <script src="~/assets/plugins/datatables/dataTables.responsive.min.js"></script>
+    <script src="~/assets/plugins/datatables/responsive.bootstrap.min.js"></script>
+    <script src="~/assets/plugins/datatables/dataTables.scroller.min.js"></script>
+
+    <!-- Datatable init js -->
+    <script src="assets/pages/datatables.init.js"></script>
+
+
     <!-- App js -->
     <script src="~/assets/js/jquery.core.js"></script>
     <script src="~/assets/js/jquery.app.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+
+    @RenderSection("Scripts",false)
 </body>
 </html>

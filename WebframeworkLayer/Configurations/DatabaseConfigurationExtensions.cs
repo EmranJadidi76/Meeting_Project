@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Service;
+using ServiceLayer;
 using ServiceLayer.Mappers;
 using System.Data;
 using System.Data.SqlClient;

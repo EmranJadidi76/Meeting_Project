@@ -7,11 +7,12 @@ namespace DataLayer.ViewModels.User
 {
     public class CreateUserViewModel
     {
-     
+
+        public string FirstName { get; set; }
+
+        public string LastName { get; set; }
+
         [Required()]
         public string NationalCode { get; set; }
-
-
-        public bool IsActive { get; set; } = true;
     }
 }
