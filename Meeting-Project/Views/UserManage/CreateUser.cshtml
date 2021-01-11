@@ -1,8 +1,94 @@
 ﻿
+<div class="content-page">
+    <div class="content">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="card-box p-b-0">
+                        <div class="dropdown pull-right">
+                            <a href="#" class="dropdown-toggle card-drop" data-toggle="dropdown" aria-expanded="false">
+                                <i class="zmdi zmdi-more-vert"></i>
+                            </a>
+                        </div>
+                        <h4 class="header-title m-t-0 m-b-30">ثبت کاربر جدید</h4>
+                        <form asp-action="CreateUser" asp-controller="UserManage" method="post">
+                            <div id="basicwizard" class=" pull-in">
+                                <ul>
+                                    <li><a href="#tab1" data-toggle="tab">اکانت</a></li>
+                                </ul>
+                                <div class="tab-content b-0 m-b-0">
+                                    <div class="tab-pane m-t-10 fade" id="tab1">
+                                        <div class="row">
+                                            <div class="form-group clearfix">
+                                                <label class="col-md-3 control-label " for="userName">نام  *</label>
+                                                <div class="col-md-9">
+                                                    <input class="form-control required" required id="userName" name="FirstName" type="text">
+                                                </div>
+                                            </div>
+                                            <div class="form-group clearfix">
+                                                <label class="col-md-3 control-label " for="userName">نام خانوادگی  *</label>
+                                                <div class="col-md-9">
+                                                    <input class="form-control required" required id="userName" name="LastName" type="text">
+                                                </div>
+                                            </div>
 
-<form asp-action="CreateUser" asp-controller="UserManage">
+                                            <div class="form-group clearfix">
+                                                <label class="col-md-3 control-label " for="userName">کد ملی *</label>
+                                                <div class="col-md-9">
+                                                    <input class="form-control required" required id="userName" name="NationalCode" type="text">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <ul class="pager wizard m-b-0">
+                                        <li class="next">
+                                            <button class="btn btn-primary btn-block waves-effect waves-light" type="submit">ثبت اطلاعات</button>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 
-    <input name="NationalCode" required />
+@section Scripts
+{
 
-    <input type="submit" value="Save"/>
-</form> 
+  
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#basicwizard').bootstrapWizard({ 'tabClass': 'nav nav-tabs navtab-wizard nav-justified bg-muted' });
+
+            $('#progressbarwizard').bootstrapWizard({
+                onTabShow: function (tab, navigation, index) {
+                    var $total = navigation.find('li').length;
+                    var $current = index + 1;
+                    var $percent = ($current / $total) * 100;
+                    $('#progressbarwizard').find('.bar').css({ width: $percent + '%' });
+                },
+                'tabClass': 'nav nav-tabs navtab-wizard nav-justified bg-muted'
+            });
+
+            $('#btnwizard').bootstrapWizard({ 'tabClass': 'nav nav-tabs navtab-wizard nav-justified bg-muted', 'nextSelector': '.button-next', 'previousSelector': '.button-previous', 'firstSelector': '.button-first', 'lastSelector': '.button-last' });
+
+
+
+            $('#rootwizard').bootstrapWizard({
+                'tabClass': 'nav nav-tabs navtab-wizard nav-justified bg-muted',
+                'onNext': function (tab, navigation, index) {
+                    var $valid = $("#commentForm").valid();
+                    if (!$valid) {
+                        $validator.focusInvalid();
+                        return false;
+                    }
+                }
+            });
+        });
+
+    </script>
+}
