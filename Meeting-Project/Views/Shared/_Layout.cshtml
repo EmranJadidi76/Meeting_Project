@@ -22,6 +22,7 @@
     <link href="~/assets/css/menu.css" rel="stylesheet" type="text/css" />
     <link href="~/assets/css/responsive.css" rel="stylesheet" type="text/css" />
     <link href="~/lib/sweetalert2/dist/sweetalert2.css" type="text/css" rel="stylesheet" />
+    <link href="~/lib/BootstrapPersianDateTimePicker/bootstrap.datetimepicker.style.css" rel="stylesheet" />
     <!-- HTML5 Shiv and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
     <!--[if lt IE 9]>
@@ -31,6 +32,9 @@
 
     <script src="~/assets/js/modernizr.min.js"></script>
 
+    <!-- jQuery  -->
+    <script src="~/assets/js/jquery.min.js"></script>
+    <script src="~/lib/BootstrapPersianDateTimePicker/bootstrap.datetimepicker.js"></script>
 </head>
 
 
@@ -77,7 +81,7 @@
                 <!-- User -->
                 <div class="user-box">
                     <div class="user-img">
-                        <img src="~/assets/images/users/avatar-1.jpg" alt="user-img" title="Mat Helme" class="img-circle img-thumbnail img-responsive">
+                        <img src="~/assets/images/small/img4.jpg" alt="user-img" title="Mat Helme" class="img-circle img-thumbnail img-responsive">
                         <div class="user-status offline"><i class="zmdi zmdi-dot-circle"></i></div>
                     </div>
                     <h5><a href="#">@User.Identity.Name</a> </h5>
@@ -96,7 +100,7 @@
                         <li class="text-muted menu-title">دسته بندی ها</li>
 
                         <li>
-                            <a href="index.html" class="waves-effect active"><i class="zmdi zmdi-view-dashboard"></i> <span> داشبورد </span> </a>
+                            <a href="/" class="waves-effect active"><i class="zmdi zmdi-view-dashboard"></i> <span> داشبورد </span> </a>
                         </li>
 
                         @await Component.InvokeAsync("SideBarComponent")
@@ -113,6 +117,8 @@
         <!-- ============================================================== -->
         <!-- Start right Content here -->
         <!-- ============================================================== -->
+        <partial name="_Message" />
+
         @RenderBody()
 
         <!-- ============================================================== -->
@@ -201,8 +207,10 @@
         var resizefunc = [];
     </script>
 
-    <!-- jQuery  -->
-    <script src="~/assets/js/jquery.min.js"></script>
+
+
+
+
     <script src="~/assets/js/bootstrap-rtl.min.js"></script>
     <script src="~/assets/js/detect.js"></script>
     <script src="~/assets/js/fastclick.js"></script>
@@ -251,6 +259,11 @@
     <script src="~/assets/js/jquery.app.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
 
-    @RenderSection("Scripts",false)
+    <!-- Form wizard -->
+    <script src="~/assets/plugins/bootstrap-wizard/jquery.bootstrap.wizard.js"></script>
+    <script src="~/assets/plugins/jquery-validation/dist/jquery.validate.min.js"></script>
+
+
+    @RenderSection("Scripts", false)
 </body>
 </html>

@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using DataLayer.Entities.Meeting;
+using Microsoft.AspNetCore.Identity;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -31,6 +32,7 @@ namespace DataLayer.Entities.User
 
         public string NationalCode { get; set; }
 
-        //public int MyProperty { get; set; }
+        public ICollection<MeetingUsers> MeetingUsers { get; set; }
+        public ICollection<Meetings> Meetings { get; set; }
     }
 }

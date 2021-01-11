@@ -1,4 +1,5 @@
 ﻿using Core.Utilities;
+using DataLayer.Entities.Meeting;
 using DataLayer.Entities.User;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
@@ -14,6 +15,13 @@ namespace ServiceLayer
         public DatabaseContext(DbContextOptions options) : base(options)
         {
         }
+
+
+        public DbSet<Meetings> Meetings { get; set; }
+
+        public DbSet<MeetingUsers> MeetingUsers { get; set; }
+
+
 
         #region CleanString
         // این بخش برای یکپارچه سازی کاراکتر ها می باشد به صورتی که اگر کاربری 
