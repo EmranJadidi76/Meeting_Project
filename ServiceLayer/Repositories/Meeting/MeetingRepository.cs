@@ -12,8 +12,13 @@ namespace ServiceLayer.Repositories.Meeting
 {
     public class MeetingRepository : GenericRepository<Meetings>
     {
-        public MeetingRepository(DatabaseContext dbContext) : base(dbContext)
+        private readonly MeetingTimesRepository _meetingTimesRepository;
+        private readonly MeetingUsersRepository _meetingUsersRepository;
+        public MeetingRepository(DatabaseContext dbContext, MeetingTimesRepository meetingTimesRepository
+            , MeetingUsersRepository meetingUsersRepository) : base(dbContext)
         {
+            _meetingTimesRepository = meetingTimesRepository;
+            _meetingUsersRepository = meetingUsersRepository;
         }
 
         public async Task<IEnumerable<Meetings>> GetMyMeeting(int? userId)
@@ -23,11 +28,14 @@ namespace ServiceLayer.Repositories.Meeting
             return model;
         }
 
-        public async Task<SweetAlertExtenstion> NewMeeting(NewMeetingViewModel vm)
+        public async Task<SweetAlertExtenstion> NewMeeting(NewMeetingViewModel model, List<MeetingTimesViewModel> vm, List<int> users)
         {
-            var model = Mapper.Map<Meetings>(vm);
+            var meeting = Mapper.Map<Meetings>(model);
 
-            await AddAsync(model);
+            await AddAsync(meeting);
+
+            await _meetingTimesRepository.AddTimes(meeting.Id, vm);
+            await _meetingUsersRepository.AddUsers(meeting.Id, users);
 
             return await SaveAsync();
         }

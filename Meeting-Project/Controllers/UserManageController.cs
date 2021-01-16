@@ -25,7 +25,7 @@ namespace Meeting_Project.Controllers
 
         public async Task<IActionResult> Index()
         {
-            var users =await _userRepository.GetAllUsers(this.UserId);
+            var users = await _userRepository.GetAllUsers(this.UserId);
 
             return View(users);
         }
@@ -66,6 +66,40 @@ namespace Meeting_Project.Controllers
             TempData.AddResult(SweetAlertExtenstion.Error("لطفا اطلاعاعات را به درستی وارد نمایید"));
             return View();
         }
+
+
+        [HttpPost]
+        public async Task<IActionResult> CreateUserAjax(CreateUserViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                var user = AutoMapper.Mapper.Map<Users>(model);
+
+                var userResult = await _userRepository.UserManager.FindByNameAsync(model.NationalCode);
+
+                if (userResult == null)
+                {
+                    var resultCreatUser = await _userRepository.UserManager.CreateAsync(user, model.NationalCode);
+
+                    if (resultCreatUser.Succeeded)
+                    {
+                        var users = await _userRepository.GetAllUsers(this.UserId);
+                        return Json(new Tuple<bool, List<Users>>(true, users.ToList()));
+                    }
+                    else
+                    {
+                        return Json(new Tuple<bool, string>(false, "لطفا مجددا تلاش کنید"));
+                    }
+                }
+                else
+                {
+                    return Json(new Tuple<bool, string>(false, "چنین کاربری از قبل وجود دارد"));
+                }
+            }
+
+            return Json(new Tuple<bool, string>(false, "لطفا اطلاعاعات را به درستی وارد نمایید"));
+        }
+
 
     }
 }
