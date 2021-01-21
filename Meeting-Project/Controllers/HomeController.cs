@@ -1,17 +1,46 @@
-﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using Microsoft.AspNetCore.Mvc;
+using ServiceLayer.Repositories.Meeting;
 using System.Threading.Tasks;
+using ServiceLayer.Repositories.User;
+using DataLayer.SSOT;
 
 namespace Meeting_Project.Controllers
 {
     public class HomeController : BaseController
     {
-        public IActionResult Index()
+        #region DI
+
+        private readonly MeetingRepository _meetingRepository;
+        private readonly UserRepository _userRepository;
+
+        public HomeController(MeetingRepository meetingRepository, UserRepository userRepository)
         {
-            return View();
+            _meetingRepository = meetingRepository;
+            _userRepository = userRepository;
         }
+
+        #endregion
+
+        public async Task<IActionResult> Index()
+        {
+            var model = await _meetingRepository.GetUserMeetings(this.UserId.Value);
+
+            return View(model);
+        }
+
+
+        public async Task<IActionResult> Detail(int id)
+        {
+            var model = await _meetingRepository.MeetingDetail(id);
+
+            if (model != null )
+                await _meetingRepository.MeetingUsersRepository.UpdateStatus(id, MeetingUserStatus.See);
+
+            ViewBag.MeetingId = id;
+
+            return View(model);
+        }
+
+       
     }
 }

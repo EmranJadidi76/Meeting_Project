@@ -22,5 +22,10 @@ namespace DataLayer.Entities.Meeting
 
         [ForeignKey(nameof(UserId))]
         public virtual Users User{ get; set; }
+
+        public virtual ICollection<MeetingUsers> MeetingUsers { get; set; }
+
+        public virtual ICollection<MeetingTimes> MeetingTimes { get; set; }
+
     }
 }

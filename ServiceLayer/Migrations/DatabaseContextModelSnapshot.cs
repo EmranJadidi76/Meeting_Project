@@ -71,13 +71,23 @@ namespace ServiceLayer.Migrations
 
                     b.Property<int>("MeetingId");
 
+                    b.Property<int?>("MeetingTimeId");
+
+                    b.Property<int?>("MeetingsId");
+
+                    b.Property<int?>("Status");
+
                     b.Property<int>("UserId");
 
-                    b.Property<int?>("UsersId");
+                    b.Property<string>("Vote");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("UsersId");
+                    b.HasIndex("MeetingTimeId");
+
+                    b.HasIndex("MeetingsId");
+
+                    b.HasIndex("UserId");
 
                     b.ToTable("MeetingUsers");
                 });
@@ -267,16 +277,25 @@ namespace ServiceLayer.Migrations
             modelBuilder.Entity("DataLayer.Entities.Meeting.MeetingTimes", b =>
                 {
                     b.HasOne("DataLayer.Entities.Meeting.Meetings", "Meetings")
-                        .WithMany()
+                        .WithMany("MeetingTimes")
                         .HasForeignKey("MeetingId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("DataLayer.Entities.Meeting.MeetingUsers", b =>
                 {
-                    b.HasOne("DataLayer.Entities.User.Users")
+                    b.HasOne("DataLayer.Entities.Meeting.MeetingTimes", "MeetingTimes")
+                        .WithMany()
+                        .HasForeignKey("MeetingTimeId");
+
+                    b.HasOne("DataLayer.Entities.Meeting.Meetings")
                         .WithMany("MeetingUsers")
-                        .HasForeignKey("UsersId");
+                        .HasForeignKey("MeetingsId");
+
+                    b.HasOne("DataLayer.Entities.User.Users", "Users")
+                        .WithMany("MeetingUsers")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<int>", b =>

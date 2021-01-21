@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace ServiceLayer.Migrations
 {
-    public partial class InitalDb : Migration
+    public partial class init : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -187,6 +187,27 @@ namespace ServiceLayer.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "MeetingTimes",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    MeetingId = table.Column<int>(nullable: false),
+                    Start = table.Column<DateTime>(nullable: false),
+                    End = table.Column<DateTime>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_MeetingTimes", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_MeetingTimes_Meetings_MeetingId",
+                        column: x => x.MeetingId,
+                        principalTable: "Meetings",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "MeetingUsers",
                 columns: table => new
                 {
@@ -194,17 +215,32 @@ namespace ServiceLayer.Migrations
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
                     UserId = table.Column<int>(nullable: false),
                     MeetingId = table.Column<int>(nullable: false),
-                    UsersId = table.Column<int>(nullable: true)
+                    Vote = table.Column<string>(nullable: true),
+                    MeetingTimeId = table.Column<int>(nullable: true),
+                    Status = table.Column<int>(nullable: true),
+                    MeetingsId = table.Column<int>(nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_MeetingUsers", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_MeetingUsers_AspNetUsers_UsersId",
-                        column: x => x.UsersId,
-                        principalTable: "AspNetUsers",
+                        name: "FK_MeetingUsers_MeetingTimes_MeetingTimeId",
+                        column: x => x.MeetingTimeId,
+                        principalTable: "MeetingTimes",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_MeetingUsers_Meetings_MeetingsId",
+                        column: x => x.MeetingsId,
+                        principalTable: "Meetings",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_MeetingUsers_AspNetUsers_UserId",
+                        column: x => x.UserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateIndex(
@@ -252,9 +288,24 @@ namespace ServiceLayer.Migrations
                 column: "UserId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_MeetingUsers_UsersId",
+                name: "IX_MeetingTimes_MeetingId",
+                table: "MeetingTimes",
+                column: "MeetingId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_MeetingUsers_MeetingTimeId",
                 table: "MeetingUsers",
-                column: "UsersId");
+                column: "MeetingTimeId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_MeetingUsers_MeetingsId",
+                table: "MeetingUsers",
+                column: "MeetingsId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_MeetingUsers_UserId",
+                table: "MeetingUsers",
+                column: "UserId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -275,13 +326,16 @@ namespace ServiceLayer.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
-                name: "Meetings");
-
-            migrationBuilder.DropTable(
                 name: "MeetingUsers");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");
+
+            migrationBuilder.DropTable(
+                name: "MeetingTimes");
+
+            migrationBuilder.DropTable(
+                name: "Meetings");
 
             migrationBuilder.DropTable(
                 name: "AspNetUsers");

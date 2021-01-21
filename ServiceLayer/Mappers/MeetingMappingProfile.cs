@@ -16,6 +16,8 @@ namespace ServiceLayer.Mappers
             CreateMap<Meetings, UpdateMeetingViewModel>().ReverseMap();
 
             CreateMap<MeetingTimes, MeetingTimesViewModel>().ReverseMap();
+
+            CreateMap<MeetingUsers, MeetingUserSelectedViewModel>().ReverseMap();
         }
     }
 }

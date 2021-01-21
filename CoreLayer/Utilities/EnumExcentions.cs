@@ -48,14 +48,21 @@ namespace Core.Utilities
 
         public static string ToDisplay(this Enum value, DisplayProperty property = DisplayProperty.Name)
         {
-            var attribute = value.GetType().GetField(value.ToString())
-                .GetCustomAttributes<DisplayAttribute>(false).FirstOrDefault();
+            try
+            {
+                var attribute = value.GetType().GetField(value.ToString())
+                    .GetCustomAttributes<DisplayAttribute>(false).FirstOrDefault();
 
-            if (attribute == null)
-                return value.ToString();
+                if (attribute == null)
+                    return value.ToString();
 
-            var propValue = attribute.GetType().GetProperty(property.ToString()).GetValue(attribute, null);
-            return propValue.ToString();
+                var propValue = attribute.GetType().GetProperty(property.ToString()).GetValue(attribute, null);
+                return propValue.ToString();
+            }
+            catch (Exception)
+            {
+                return "";
+            }
         }
 
         public static Dictionary<int, string> ToDictionary(this Enum value)

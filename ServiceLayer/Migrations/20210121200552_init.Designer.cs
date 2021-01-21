@@ -10,8 +10,8 @@ using ServiceLayer;
 namespace ServiceLayer.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    [Migration("20210111152729_InitalDb")]
-    partial class InitalDb
+    [Migration("20210121200552_init")]
+    partial class init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -46,6 +46,25 @@ namespace ServiceLayer.Migrations
                     b.ToTable("Meetings");
                 });
 
+            modelBuilder.Entity("DataLayer.Entities.Meeting.MeetingTimes", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<DateTime>("End");
+
+                    b.Property<int>("MeetingId");
+
+                    b.Property<DateTime>("Start");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("MeetingId");
+
+                    b.ToTable("MeetingTimes");
+                });
+
             modelBuilder.Entity("DataLayer.Entities.Meeting.MeetingUsers", b =>
                 {
                     b.Property<int>("Id")
@@ -54,13 +73,23 @@ namespace ServiceLayer.Migrations
 
                     b.Property<int>("MeetingId");
 
+                    b.Property<int?>("MeetingTimeId");
+
+                    b.Property<int?>("MeetingsId");
+
+                    b.Property<int?>("Status");
+
                     b.Property<int>("UserId");
 
-                    b.Property<int?>("UsersId");
+                    b.Property<string>("Vote");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("UsersId");
+                    b.HasIndex("MeetingTimeId");
+
+                    b.HasIndex("MeetingsId");
+
+                    b.HasIndex("UserId");
 
                     b.ToTable("MeetingUsers");
                 });
@@ -247,11 +276,28 @@ namespace ServiceLayer.Migrations
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
+            modelBuilder.Entity("DataLayer.Entities.Meeting.MeetingTimes", b =>
+                {
+                    b.HasOne("DataLayer.Entities.Meeting.Meetings", "Meetings")
+                        .WithMany("MeetingTimes")
+                        .HasForeignKey("MeetingId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
             modelBuilder.Entity("DataLayer.Entities.Meeting.MeetingUsers", b =>
                 {
-                    b.HasOne("DataLayer.Entities.User.Users")
+                    b.HasOne("DataLayer.Entities.Meeting.MeetingTimes", "MeetingTimes")
+                        .WithMany()
+                        .HasForeignKey("MeetingTimeId");
+
+                    b.HasOne("DataLayer.Entities.Meeting.Meetings")
                         .WithMany("MeetingUsers")
-                        .HasForeignKey("UsersId");
+                        .HasForeignKey("MeetingsId");
+
+                    b.HasOne("DataLayer.Entities.User.Users", "Users")
+                        .WithMany("MeetingUsers")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<int>", b =>

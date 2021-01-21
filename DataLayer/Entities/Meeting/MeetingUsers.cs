@@ -1,4 +1,5 @@
 ﻿using DataLayer.Entities.User;
+using DataLayer.SSOT;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -12,6 +13,20 @@ namespace DataLayer.Entities.Meeting
 
         public int MeetingId { get; set; }
 
+        public string Vote { get; set; }
 
+        public int? MeetingTimeId { get; set; }
+
+        public MeetingUserStatus? Status { get; set; }
+
+
+        [ForeignKey(nameof(UserId))]
+        public virtual Users Users { get; set; }
+
+        [ForeignKey(nameof(MeetingId))]
+        public virtual Meetings Meetings { get; set; }
+
+        [ForeignKey(nameof(MeetingTimeId))]
+        public virtual MeetingTimes MeetingTimes { get; set; }
     }
 }

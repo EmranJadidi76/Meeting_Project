@@ -1,1 +1,71 @@
-﻿
+﻿@model List<Meetings>
+
+<div class="content-page">
+    <div class="content">
+        <div class="container">
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="card-box table-responsive">
+                        <div class="dropdown pull-right">
+                            <a href="#" class="dropdown-toggle card-drop" data-toggle="dropdown" aria-expanded="false">
+                                <i class="zmdi zmdi-more-vert"></i>
+                            </a>
+
+                        </div>
+
+                        <h4 class="header-title m-t-0 m-b-30">جلسات</h4>
+
+                        <table id="datatable-keytable" class="table table-striped table-bordered">
+                            <thead>
+                                <tr>
+                                    <th class="text-center" width="1">ردیف</th>
+                                    <th class="text-center" width="200">عنوان جلسه</th>
+                                    <th class="text-center" width="300">توضیحات جلسه</th>
+                                    <th class="text-center" width="130">تاریخ ثبت</th>
+                                    <th class="text-center" width="10">جزئیات جلسه</th>
+                                </tr>
+                            </thead>
+                            @{var row = 1;}
+                            @foreach (var item in Model)
+                            {
+                                <tr class="text-center">
+                                    <td>@(row++)</td>
+                                    <td>@item.Title</td>
+                                    <td>@item.Description</td>
+                                    <td>
+                                        @item.CreateDate.ToPersianDateTextify()
+                                    </td>
+                                    
+                                    <td>
+                                        <a asp-action="Detail" asp-controller="Home" asp-route-id="@item.Id">مشاهده</a>
+                                    </td>
+                                </tr>
+                            }
+                            <tbody>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+</div>
+
+
+@section Scripts{
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#datatable').DataTable();
+            $('#datatable-keytable').DataTable({ keys: true });
+            $('#datatable-responsive').DataTable();
+            $('#datatable-scroller').DataTable({ ajax: "~/assets/plugins/datatables/json/scroller-demo.json", deferRender: true, scrollY: 380, scrollCollapse: true, scroller: true });
+            var table = $('#datatable-fixed-header').DataTable({ fixedHeader: true });
+        });
+        TableManageButtons.init();
+
+    </script>
+
+
+}

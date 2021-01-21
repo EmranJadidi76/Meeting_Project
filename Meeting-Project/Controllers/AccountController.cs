@@ -63,7 +63,7 @@ namespace Meeting_Project.Controllers
 
                 TempData.AddResult(SweetAlertExtenstion.Error("کلمه عبور یا نام کاربری نادرست است"));
 
-                return Redirect("Index");
+                return Redirect("Login");
             }
 
             TempData.AddResult(SweetAlertExtenstion.Error("لطفا اطلاعات را به درستی وارد کنید"));

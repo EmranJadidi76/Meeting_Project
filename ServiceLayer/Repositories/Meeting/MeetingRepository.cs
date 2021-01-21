@@ -21,6 +21,9 @@ namespace ServiceLayer.Repositories.Meeting
             _meetingUsersRepository = meetingUsersRepository;
         }
 
+        public MeetingTimesRepository MeetingTimesRepository => _meetingTimesRepository;
+        public MeetingUsersRepository MeetingUsersRepository => _meetingUsersRepository;
+
         public async Task<IEnumerable<Meetings>> GetMyMeeting(int? userId)
         {
             var model = await GetListAsync(a => a.UserId == userId, o => o.OrderByDescending(x => x.CreateDate));
@@ -39,5 +42,24 @@ namespace ServiceLayer.Repositories.Meeting
 
             return await SaveAsync();
         }
+
+
+        public async Task<Tuple<IEnumerable<MeetingTimes>, IEnumerable<MeetingUsers>>> MeetingDetail(int id)
+        {
+            var times = await MeetingTimesRepository.GetListAsync(a => a.MeetingId == id);
+            var users = await MeetingUsersRepository.GetListAsync(a => a.MeetingId == id, includes: "Users,MeetingTimes");
+
+            return new Tuple<IEnumerable<MeetingTimes>, IEnumerable<MeetingUsers>>(times, users);
+        }
+
+        public async Task<IEnumerable<Meetings>> GetUserMeetings(int userId)
+        {
+            var meetingIds = await MeetingUsersRepository.ListMeetingsbyUserId(userId);
+
+            var meetings = await GetListAsync(a => meetingIds.Contains(a.Id), o => o.OrderByDescending(a => a.CreateDate), includes: "MeetingUsers,MeetingTimes");
+
+            return meetings;
+        }
+
     }
 }

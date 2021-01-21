@@ -1,6 +1,6 @@
 ﻿@using DataLayer.Entities.User
 @model List<Meetings>
-@{ 
+@{
     var count = 1;
 }
 <div class="content-page">
@@ -15,21 +15,20 @@
                             <a href="#" class="dropdown-toggle card-drop" data-toggle="dropdown" aria-expanded="false">
                                 <i class="zmdi zmdi-more-vert"></i>
                             </a>
-                          
+
                         </div>
 
                         <h4 class="header-title m-t-0 m-b-30">لیست جلسات من</h4>
-                            
+
                         <table id="datatable-keytable" class="table table-striped table-bordered">
                             <thead>
                                 <tr>
-                                    <th>ردیف</th>
-                                    <th>عنوان جلسه</th>
-                                    <th>توضیحات جلسه</th>
-                                    @*<th>تاریخ برگذاری جلسه </th>*@
-                                    <th>تاریخ ثبت </th>
-                                    <th>فعال / غیر فعال </th>
-                                    <th>اقدامات</th>
+                                    <th class="text-center" width="1">ردیف</th>
+                                    <th class="text-center" width="200">عنوان جلسه</th>
+                                    <th class="text-center" width="300">توضیحات جلسه</th>
+                                    <th class="text-center" width="130">تاریخ ثبت </th>
+                                    <th class="text-center" width="130">تاریخ برگذاری جلسه </th>
+                                    <th class="text-center" width="1">اقدامات</th>
                                 </tr>
                             </thead>
 
@@ -41,19 +40,12 @@
                                         <td>@(count++.ToPersianNumbers())</td>
                                         <td>@item.Title</td>
                                         <td>@item.Description</td>
-                                        @*<td>@item.MeetingDate.ToPersianDateTextify()</td>*@
                                         <td>@item.CreateDate.ToPersianDateTextify()</td>
+                                        <td class="text-warning">درحال بررسی</td>
+                                       
                                         <td>
-                                            @if (item.IsActive)
-                                            {
-                                                <h3 class="text-center"><i class="zmdi zmdi-eye text-success"></i></h3>
-                                            }
-                                            else
-                                            {
-
-                                            }
+                                            <a class="btn btn-success Users" asp-action="Detail" asp-route-id="@item.Id">مشاهده جزئیات</a>
                                         </td>
-                                        <td></td>
                                     </tr>
                                 }
                             </tbody>
@@ -64,6 +56,9 @@
         </div>
     </div>
 </div>
+
+
+
 
 
 
@@ -79,4 +74,6 @@
         TableManageButtons.init();
 
     </script>
+
+  
 }
