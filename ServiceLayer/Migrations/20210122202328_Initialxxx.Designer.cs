@@ -10,8 +10,8 @@ using ServiceLayer;
 namespace ServiceLayer.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    [Migration("20210122065102_MeetingsUserIsVote")]
-    partial class MeetingsUserIsVote
+    [Migration("20210122202328_Initialxxx")]
+    partial class Initialxxx
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -33,11 +33,19 @@ namespace ServiceLayer.Migrations
 
                     b.Property<bool>("IsActive");
 
-                    b.Property<DateTime?>("MeetingDate");
+                    b.Property<bool>("IsVote");
+
+                    b.Property<DateTime?>("MeetingEnd");
+
+                    b.Property<DateTime?>("MeetingStart");
+
+                    b.Property<string>("TimeIds");
 
                     b.Property<string>("Title");
 
                     b.Property<int>("UserId");
+
+                    b.Property<string>("Vote");
 
                     b.HasKey("Id");
 
@@ -75,9 +83,9 @@ namespace ServiceLayer.Migrations
 
                     b.Property<int>("MeetingId");
 
-                    b.Property<int?>("MeetingTimeId");
-
                     b.Property<int?>("Status");
+
+                    b.Property<string>("TimeIds");
 
                     b.Property<int>("UserId");
 
@@ -86,8 +94,6 @@ namespace ServiceLayer.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("MeetingId");
-
-                    b.HasIndex("MeetingTimeId");
 
                     b.HasIndex("UserId");
 
@@ -290,10 +296,6 @@ namespace ServiceLayer.Migrations
                         .WithMany("MeetingUsers")
                         .HasForeignKey("MeetingId")
                         .OnDelete(DeleteBehavior.Cascade);
-
-                    b.HasOne("DataLayer.Entities.Meeting.MeetingTimes", "MeetingTimes")
-                        .WithMany()
-                        .HasForeignKey("MeetingTimeId");
 
                     b.HasOne("DataLayer.Entities.User.Users", "Users")
                         .WithMany("MeetingUsers")

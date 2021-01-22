@@ -1,5 +1,10 @@
-﻿@model Tuple<IEnumerable<MeetingTimes>, IEnumerable<MeetingUsers>>
-
+﻿@model Tuple<IEnumerable<MeetingTimes>, IEnumerable<MeetingUsers>, Meetings>
+@inject ServiceLayer.Repositories.Meeting.MeetingTimesRepository MeetingTimesRepository
+<style>
+    li {
+        list-style-type: none;
+    }
+</style>
 
 <div class="content-page">
     <!-- Start content -->
@@ -37,9 +42,20 @@
                                     <td>@item.Users.FullName</td>
                                     <td>@item.Status.ToDisplay()</td>
                                     <td>
-                                        @if (item.MeetingTimeId != null)
+                                        @if (item.IsVote)
                                         {
-                                            <span>@item.MeetingTimes.Start.ToLongPersianDateTimeString() --- @item.MeetingTimes.End.ToLongPersianDateTimeString()</span>
+                                            <span>
+                                                <ul class="list-item">
+                                                    @{ var times = MeetingTimesRepository.GetTimeByTimeIds(item.TimeIds);}
+                                                    @if (times != null)
+                                                    {
+                                                        foreach (var time in times)
+                                                        {
+                                                            <li>@time</li>
+                                                        }
+                                                    }
+                                                </ul>
+                                            </span>
                                         }
                                         else
                                         {
@@ -53,6 +69,7 @@
                             <tbody>
                             </tbody>
                         </table>
+                        <a class="btn btn-block btn-danger" href="/Meeting/Index">بازگشت</a>
                     </div>
                 </div><!-- end col -->
             </div>
@@ -64,7 +81,7 @@
 
 
 <div id="custom-modal" class="modal-demo">
-    <form asp-action="UserSelected" asp-controller="Meeting" method="post" id="create-user-form">
+    <form asp-action="MeetingManagerSelectTime" asp-controller="Meeting" method="post" id="create-user-form">
         <button type="button" class="close" id="custom-modal-close" onclick="Custombox.close();">
             <span>&times;</span><span class="sr-only">بستن</span>
         </button>
@@ -73,7 +90,7 @@
 
             <div class="row">
 
-                <h4 class="header-title m-t-0 m-b-30">انتخاب زمان پیشنهادی</h4>
+                <h4 class="header-title m-t-0 m-b-30">تعیین وقت نهایی برای جلسه</h4>
 
                 <table id="datatable-keytable" class="table table-striped table-bordered">
                     <thead>
@@ -89,7 +106,7 @@
                         {
 
                             <tr class="text-center">
-                                <td><input type="radio" name="MeetingTimeId" value="@item.Id" /></td>
+                                <td><input type="checkbox" value="@item.Id" /></td>
                                 <td>@item.Start.ToLongPersianDateTimeString()</td>
                                 <td>@item.End.ToLongPersianDateTimeString()</td>
                             </tr>
@@ -98,7 +115,10 @@
                     </tbody>
                 </table>
 
-
+                <div class="col-md-12">
+                    <label>نظر</label>
+                    <textarea required class="form-control" name="Vote"></textarea>
+                </div>
                 <input type="hidden" name="Id" value="@ViewBag.MeetingId " />
             </div>
             @if (Model.Item2.Any(a => !a.IsVote))
@@ -109,16 +129,16 @@
             }
             else
             {
-                <div class="alert alert-warning">
-                    <h5 class="text-center">پس از ثبت اطلاعات امکان تغییر دیگر وجود ندارد</h5>
-                </div>
+
                 <ul class="pager wizard m-b-0">
                     <li class="next row">
-                        <button class="btn btn-primary btn-block waves-effect waves-light" name="Status" value="Accept" type="submit">ثبت کردن</button>
+                        <button class="btn btn-primary btn-block waves-effect waves-light" type="submit">ثبت کردن</button>
 
                     </li>
                 </ul>
             }
+
+
         </div>
     </form>
 </div>
@@ -141,5 +161,22 @@
 
     </script>
 
+    <script>
+
+        $(function () {
+            $('#create-user-form').on('submit', function (e) {
+                e.preventDefault();
+
+                var checkboxs = $('input[type="checkbox"]:checked');
+                $.each(checkboxs, function (index, key) {
+                    var value = parseInt($(key).val());
+                    $(this).append("<input name='times' type='hidden' value='" + value + "'>");
+                });
+
+
+                $('#create-user-form').unbind('submit').submit();
+            });
+        })
+    </script>
 
 }

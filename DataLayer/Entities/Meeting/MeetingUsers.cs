@@ -17,10 +17,9 @@ namespace DataLayer.Entities.Meeting
 
         public bool IsVote { get; set; }
 
-        public int? MeetingTimeId { get; set; }
+        public string TimeIds { get; set; }
 
         public MeetingUserStatus? Status { get; set; }
-
 
         [ForeignKey(nameof(UserId))]
         public virtual Users Users { get; set; }
@@ -28,7 +27,5 @@ namespace DataLayer.Entities.Meeting
         [ForeignKey(nameof(MeetingId))]
         public virtual Meetings Meetings { get; set; }
 
-        [ForeignKey(nameof(MeetingTimeId))]
-        public virtual MeetingTimes MeetingTimes { get; set; }
     }
 }

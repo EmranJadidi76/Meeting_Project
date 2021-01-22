@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using ServiceLayer;
 
 namespace ServiceLayer.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    partial class DatabaseContextModelSnapshot : ModelSnapshot
+    [Migration("20210122193105_Initialx")]
+    partial class Initialx
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -31,8 +33,6 @@ namespace ServiceLayer.Migrations
 
                     b.Property<bool>("IsActive");
 
-                    b.Property<bool>("IsVote");
-
                     b.Property<DateTime?>("MeetingEnd");
 
                     b.Property<DateTime?>("MeetingStart");
@@ -42,8 +42,6 @@ namespace ServiceLayer.Migrations
                     b.Property<string>("Title");
 
                     b.Property<int>("UserId");
-
-                    b.Property<string>("Vote");
 
                     b.HasKey("Id");
 

@@ -1,0 +1,410 @@
+﻿@model Meetings
+
+<div class="content-page">
+    <div class="content">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="card-box p-b-0">
+                        <div class="dropdown pull-right">
+                            <a href="#" class="dropdown-toggle card-drop" data-toggle="dropdown" aria-expanded="false">
+                                <i class="zmdi zmdi-more-vert"></i>
+                            </a>
+                        </div>
+                        <h4 class="header-title m-t-0 m-b-30">ویرایش جلسه </h4>
+                        <form id="frm" asp-action="Edit" asp-controller="Meeting" method="post">
+                            <div id="basicwizard" class=" pull-in">
+                                <ul>
+                                    <li><a href="#tab1" data-toggle="tab">جلسه</a></li>
+                                </ul>
+                                <div class="tab-content b-0 m-b-0">
+                                    <div class="tab-pane m-t-10 fade" id="tab1">
+                                        <div class="row">
+                                            <div class="form-group clearfix">
+                                                <label class="col-md-2 control-label " for="userName">عنوان جلسه *</label>
+                                                <div class="col-md-10">
+                                                    <input class="form-control required" required id="userName" asp-for="Title" type="text">
+                                                </div>
+                                            </div>
+                                            <div class="form-group clearfix">
+                                                <label class="col-md-2 control-label"> توضیحات جلسه *</label>
+                                                <div class="col-md-10">
+                                                    <textarea class="form-control" asp-for="Description" required></textarea>
+                                                </div>
+                                            </div>
+
+                                            @*<fieldset>
+                                                    <legend>انتخاب کاربر</legend>
+                                                    <div class="form-group clearfix">
+                                                        <label class="col-md-2 control-label"> اعضا *</label>
+                                                        <div class="col-md-10" id="select-user-div">
+                                                            <select class="users-data select2 select2-multiple" name="users" multiple="multiple" id="" data-placeholder=" اتتخابی کن ...">
+                                                                @foreach (var item in ViewBag.Users as List<Users>)
+                                                                {
+                                                                    <option value="@item.Id">@item.FullName</option>
+                                                                }
+                                                            </select>
+                                                        </div>
+
+                                                    </div>
+
+                                                    <div class="alert alert-info">
+                                                        <h4>در صورت وجود نداشتن کاربر مورد نظر <a href="#custom-modal" data-animation="fall" data-plugin="custommodal" data-overlaySpeed="100" data-overlayColor="#36404a"> کلیک </a> کنید</h4>
+                                                    </div>
+                                                </fieldset>
+
+                                                <fieldset>
+                                                    <legend>زمان برگزاری جلسه</legend>
+
+                                                    <div class="form-group clearfix">
+                                                        <div id="app">
+                                                            <multi-text v-model="students" @@input="alert()">
+                                                                <multi-text />
+                                                                <p v-for="item in students">0</p>
+                                                        </div>
+                                                        <template type="text/x-template" id="multi-text-template">
+                                                            <div class="multi-text">
+                                                                <div v-for="(item, index) in values">
+                                                                    <div class="col-sm-5">
+                                                                        <label class="col-md-3 control-label"> تاریخ شروع * </label>
+                                                                        <div class="col-sm-9">
+                                                                            <input type="text" @@input="updateValue()"
+                                                                                   class="form-control multi-text-item-start" :data-start-date-id="index" required="required"
+                                                                                   placeholder="" />
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="col-sm-5">
+                                                                        <label class="col-md-3 control-label"> تاریخ پایان *</label>
+                                                                        <div class="col-sm-9">
+                                                                            <input type="text" @@input="updateValue()"
+                                                                                   class="form-control multi-text-item-end" :data-end-date-id="index" required="required"
+                                                                                   placeholder="" />
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="col-sm-1">
+                                                                        <a href="#" style="font-size:30px" @@click="deleteValue(index)" class="text-danger"><i class='fa fa-close btn-icon' aria-hidden='true'></i>&nbsp;&nbsp;</a>
+                                                                    </div>
+                                                                </div>
+                                                                <br />
+
+                                                                <a href="#" @@click="addValue()" style="font-size:30px;margin-right:4px"><i class='fa fa-plus-circle btn-icon' aria-hidden='true'></i>&nbsp;&nbsp;</a>
+
+                                                            </div>
+                                                        </template>
+
+                                                    </div>
+                                                </fieldset>*@
+
+                                        </div>
+                                    </div>
+                                    <ul class="pager wizard m-b-0">
+                                        <li class="next">
+                                            <button class="btn btn-primary btn-block waves-effect waves-light" type="submit">ثبت اطلاعات</button>
+                                            <a  class="btn btn-danger btn-block waves-effect waves-light" href="/Meeting/Index">بازگشت</a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@*<div id="custom-modal" class="modal-demo">
+        <form asp-action="CreateUserAjax" asp-controller="UserManage" method="post" id="create-user-form">
+            <button type="button" class="close" id="custom-modal-close" onclick="Custombox.close();">
+                <span>&times;</span><span class="sr-only">بستن</span>
+            </button>
+            <h4 class="custom-modal-title">ثبت کاربر جدید </h4>
+            <div class="custom-modal-text">
+                <div class="row">
+                    <div class="form-group clearfix">
+                        <label class="col-md-3 control-label " for="userName">نام  *</label>
+                        <div class="col-md-9">
+                            <input class="form-control required" required id="userName" name="FirstName" type="text">
+                        </div>
+                    </div>
+                    <div class="form-group clearfix">
+                        <label class="col-md-3 control-label " for="userName">نام خانوادگی  *</label>
+                        <div class="col-md-9">
+                            <input class="form-control required" required id="userName" name="LastName" type="text">
+                        </div>
+                    </div>
+
+                    <div class="form-group clearfix">
+                        <label class="col-md-3 control-label " for="userName">کد ملی *</label>
+                        <div class="col-md-9">
+                            <input class="form-control required" required id="userName" name="NationalCode" type="text">
+                        </div>
+                    </div>
+                </div>
+                <ul class="pager wizard m-b-0">
+                    <li class="next">
+                        <button class="btn btn-primary btn-block waves-effect waves-light" type="submit">ثبت اطلاعات</button>
+                    </li>
+                </ul>
+            </div>
+        </form>
+    </div>*@
+
+@section Scripts
+{
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#basicwizard').bootstrapWizard({ 'tabClass': 'nav nav-tabs navtab-wizard nav-justified bg-muted' });
+
+            $('#progressbarwizard').bootstrapWizard({
+                onTabShow: function (tab, navigation, index) {
+                    var $total = navigation.find('li').length;
+                    var $current = index + 1;
+                    var $percent = ($current / $total) * 100;
+                    $('#progressbarwizard').find('.bar').css({ width: $percent + '%' });
+                },
+                'tabClass': 'nav nav-tabs navtab-wizard nav-justified bg-muted'
+            });
+
+            $('#btnwizard').bootstrapWizard({ 'tabClass': 'nav nav-tabs navtab-wizard nav-justified bg-muted', 'nextSelector': '.button-next', 'previousSelector': '.button-previous', 'firstSelector': '.button-first', 'lastSelector': '.button-last' });
+
+
+
+            $('#rootwizard').bootstrapWizard({
+                'tabClass': 'nav nav-tabs navtab-wizard nav-justified bg-muted',
+                'onNext': function (tab, navigation, index) {
+                    var $valid = $("#commentForm").valid();
+                    if (!$valid) {
+                        $validator.focusInvalid();
+                        return false;
+                    }
+                }
+            });
+        });
+
+    </script>
+
+}
+@*<link href="~/lib/MdDateTimePicker/dist/jquery.md.bootstrap.datetimepicker.style.css" rel="stylesheet" />
+    <script src="~/lib/MdDateTimePicker/dist/jquery.md.bootstrap.datetimepicker.js"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+
+    <script>
+        Vue.component('multi-text', {
+            // can be a function to retrieve template from html
+            template: '#multi-text-template',
+            // get init value through prop 'value'
+            // either from parent v-model="some" or equivalently
+            // v-bind:value="some" v-on:input="some = $event.target.value">
+            props: ['value'],
+            // return empty data until init complete async
+            data: function () {
+                return { values: [] };
+            },
+            // init with ajax to server to get data
+            created: function () {
+                console.log("create")
+                var v = Array.from(this.value);
+                this.values = v;
+            },
+            methods: {
+                updateValue: function () {
+
+                    //this.$emit('input', this.values);
+                },
+                deleteValue: function (index) {
+                    this.values.splice(index, 1);
+
+                    //this.$emit('input', this.values);
+                },
+                addValue: function () {
+                    console.log("add")
+                    var len = this.values.length;
+
+                    this.values.push({});
+
+                    setDateTimePicker(len);
+                    //this.$emit('input', this.values);
+                }
+            }
+        })
+
+        new Vue({
+            el: '#app',
+            data: {
+                students: []
+            },
+            // methods: {
+            //   updateValue: function(index, value) {
+            //     this.values[index] = value;
+            //     this.$emit('input', this.values);
+            //   },
+            //   deleteItem: function(items, index) {
+            //     items.splice(index, 1);
+            //   },
+            //   addItem: function(items) {
+            //     var newVal = {};
+            //     for(var k in items[0]) newVal[k] = "";
+            //     items.push(newVal);
+            //   }
+            // }
+        });
+    </script>*@
+
+@*<script>
+        $(function () {
+
+            $('#frm').on("submit" ,function (e) {
+                e.preventDefault();
+                var frm = $(this);
+                var inputs = $('.multi-text-item-start');
+                $.each(inputs, function (index, key) {
+                    var val = $(key).val();
+                    console.log(index);
+                    $(frm).append("<input class='testClass' type='hidden' name='vm[" + index + "].Start' value='" + val + "'>")
+                })
+                var inputs = $('.multi-text-item-end');
+                $.each(inputs, function (index, key) {
+                    var val = $(key).val();
+                    $(frm).append("<input class='testClass' type='hidden' name='vm[" + index + "].End' value='" + val + "'>")
+                })
+                $(frm).unbind('submit').submit();
+            });
+        })
+
+    </script>*@
+
+
+
+@*<script>
+
+            function setDateTimePicker(index) {
+                console.log("DateTime")
+                setTimeout(function () {
+                    $(`[data-start-date-id='${index}']`).MdPersianDateTimePicker({
+                        targetTextSelector: `[data-start-date-id='${index}']`,
+                        targetDateSelector: `[data-start-date-id='${index}']`,
+                        toDate: true,
+                        groupId: 'rangeSelector1',
+                        placement: 'bottom',
+                        enableTimePicker: true,
+                        dateFormat: 'yyyy-MM-dd HH:mm:ss',
+                        textFormat: 'yyyy-MM-dd HH:mm:ss',
+                    });
+
+
+                    $(`[data-end-date-id='${index}']`).MdPersianDateTimePicker({
+                        targetTextSelector: `[data-end-date-id='${index}']`,
+                        targetDateSelector: `[data-end-date-id='${index}']`,
+                        toDate: true,
+                        groupId: 'rangeSelector1',
+                        placement: 'bottom',
+                        enableTimePicker: true,
+                        dateFormat: 'yyyy-MM-dd HH:mm:ss',
+                        textFormat: 'yyyy-MM-dd HH:mm:ss',
+                    });
+
+                }, 500)
+
+
+            }
+
+
+        </script>
+
+        <script type="text/javascript">
+            $(document).ready(function () {
+                $('#basicwizard').bootstrapWizard({ 'tabClass': 'nav nav-tabs navtab-wizard nav-justified bg-muted' });
+
+                $('#progressbarwizard').bootstrapWizard({
+                    onTabShow: function (tab, navigation, index) {
+                        var $total = navigation.find('li').length;
+                        var $current = index + 1;
+                        var $percent = ($current / $total) * 100;
+                        $('#progressbarwizard').find('.bar').css({ width: $percent + '%' });
+                    },
+                    'tabClass': 'nav nav-tabs navtab-wizard nav-justified bg-muted'
+                });
+
+                $('#btnwizard').bootstrapWizard({ 'tabClass': 'nav nav-tabs navtab-wizard nav-justified bg-muted', 'nextSelector': '.button-next', 'previousSelector': '.button-previous', 'firstSelector': '.button-first', 'lastSelector': '.button-last' });
+
+
+
+                $('#rootwizard').bootstrapWizard({
+                    'tabClass': 'nav nav-tabs navtab-wizard nav-justified bg-muted',
+                    'onNext': function (tab, navigation, index) {
+                        var $valid = $("#commentForm").valid();
+                        if (!$valid) {
+                            $validator.focusInvalid();
+                            return false;
+                        }
+                    }
+                });
+            });
+
+        </script>
+        <script>
+            $(function () {
+                $(".select2").select2();
+            })
+
+        </script>
+
+
+        <script>
+            $(function () {
+                $('#create-user-form').on('submit', function (e) {
+                    e.preventDefault();
+                    var href = $(this).attr('action');
+                    var formdata = new FormData(this)
+                    $.ajax({
+                        url: href,
+                        type: 'POST',
+                        datatype: 'JSON',
+                        data: formdata,
+                        processData: false,
+                        contentType: false
+                    }).done(function (result) {
+                        if (result.item1) {
+                            var inputs = $('.users-data')[1];
+                            $(inputs).find('option').remove();
+                            $.each(result.item2, function (index, key) {
+                                $(inputs).append(new Option(key.fullName, key.id));
+                            });
+
+                            swal.fire({
+                                title: 'موفق',
+                                text: 'کاربر با موفقیت افزوده شد',
+                                icon: "success",
+                                confirmButtonText: "تایید",
+                                showClass: {
+                                    popup: 'animated fadeInDown faster'
+                                },
+                                hideClass: {
+                                    popup: 'animated fadeOutUp faster'
+                                }
+                            });
+                        }
+                        else {
+                            swal.fire({
+                                title: 'خطا',
+                                text: result.item2,
+                                icon: "error",
+                                confirmButtonText: "تایید",
+                                showClass: {
+                                    popup: 'animated fadeInDown faster'
+                                },
+                                hideClass: {
+                                    popup: 'animated fadeOutUp faster'
+                                }
+                            });
+                        }
+                        $('#custom-modal-close').click();
+                        $('#create-user-form').trigger('reset');
+                    });
+                });
+            });
+        </script>
+    }*@

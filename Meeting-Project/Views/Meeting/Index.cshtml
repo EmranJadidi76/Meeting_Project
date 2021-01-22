@@ -1,4 +1,10 @@
 ﻿@using DataLayer.Entities.User
+@inject ServiceLayer.Repositories.Meeting.MeetingTimesRepository MeetingTimesRepository
+<style>
+    li {
+        list-style-type: none;
+    }
+</style>
 @model List<Meetings>
 @{
     var count = 1;
@@ -27,7 +33,7 @@
                                     <th class="text-center" width="200">عنوان جلسه</th>
                                     <th class="text-center" width="300">توضیحات جلسه</th>
                                     <th class="text-center" width="130">تاریخ ثبت </th>
-                                    <th class="text-center" width="130">تاریخ برگذاری جلسه </th>
+                                    <th class="text-center" width="400">تاریخ برگذاری جلسه </th>
                                     <th class="text-center" width="1">اقدامات</th>
                                 </tr>
                             </thead>
@@ -40,11 +46,34 @@
                                         <td>@(count++.ToPersianNumbers())</td>
                                         <td>@item.Title</td>
                                         <td>@item.Description</td>
-                                        <td>@item.CreateDate.ToPersianDateTextify()</td>
-                                        <td class="text-warning">درحال بررسی</td>
-                                       
+                                        <td>@item.CreateDate.ToPersianDay()</td>
+                                        <td class="">
+
+
+                                            @if (string.IsNullOrEmpty(item.TimeIds))
+                                            {
+                                                <span> --- </span>
+                                            }
+                                            else
+                                            {
+                                                <ul style="padding: 0;">
+                                                    @{ var times = MeetingTimesRepository.GetTimeByTimeIds(item.TimeIds); }
+                                                    @if (times != null)
+                                                    {
+                                                        foreach (var time in times)
+                                                        {
+                                                            <li>@time</li>
+                                                        }
+                                                    }
+                                                </ul>
+                                            }
+
+                                        </td>
+
                                         <td>
-                                            <a class="btn btn-success Users" asp-action="Detail" asp-route-id="@item.Id">مشاهده جزئیات</a>
+                                            <a class="btn btn-block btn-success Users" asp-action="Detail" asp-route-id="@item.Id">مشاهده جزئیات</a>
+                                            <a class="btn btn-block btn-warning" asp-action="Edit" asp-route-id="@item.Id">ویرایش</a>
+                                            <a class="btn btn-block btn-danger"  asp-action="DeleteMeeting" asp-route-id="@item.Id">حذف جلسه</a>
                                         </td>
                                     </tr>
                                 }
@@ -75,5 +104,5 @@
 
     </script>
 
-  
+
 }

@@ -40,7 +40,7 @@ namespace ServiceLayer.Repositories.Meeting
 
         public async Task UpdateStatus(int meetingId, MeetingUserStatus status)
         {
-            var model = await GetByConditionAsync(a => a.Id == meetingId && a.MeetingTimeId == null);
+            var model = await GetByConditionAsync(a => a.Id == meetingId && a.IsVote);
 
             if (model == null) return;
 
@@ -58,7 +58,7 @@ namespace ServiceLayer.Repositories.Meeting
                 return SweetAlertExtenstion.Error("خطایی در سرور رخ داده است لطفا مجددا تلاش بفرمایید");
 
             if (vm.Status == MeetingUserStatus.Reject)
-                vm.MeetingTimeId = null;
+                vm.TimeIds = null;
 
             var updated = Mapper.Map(vm, model);
 
@@ -66,5 +66,9 @@ namespace ServiceLayer.Repositories.Meeting
 
             return SweetAlertExtenstion.Ok();
         }
+
+
+   
+
     }
 }

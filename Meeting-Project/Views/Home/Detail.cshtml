@@ -1,5 +1,10 @@
-﻿@model Tuple<IEnumerable<MeetingTimes>, IEnumerable<MeetingUsers>>
-
+﻿@model Tuple<IEnumerable<MeetingTimes>, IEnumerable<MeetingUsers>, Meetings>
+@inject ServiceLayer.Repositories.Meeting.MeetingTimesRepository MeetingTimesRepository
+<style>
+    li {
+        list-style-type: none;
+    }
+</style>
 <div class="content-page">
     <!-- Start content -->
     <div class="content">
@@ -8,7 +13,7 @@
                 <div class="col-sm-12">
                     <div class="card-box table-responsive">
                         <div class="dropdown pull-right">
-                            <a  href="#custom-modal" data-animation="fall" data-plugin="custommodal" data-overlaySpeed="100" data-overlayColor="#36404a" class="btn btn-info">اعلام نظر</a>
+                            <a href="#custom-modal" data-animation="fall" data-plugin="custommodal" data-overlaySpeed="100" data-overlayColor="#36404a" class="btn btn-info">اعلام نظر</a>
                             <a href="#" class="dropdown-toggle card-drop" data-toggle="dropdown" aria-expanded="false">
                                 <i class="zmdi zmdi-more-vert"></i>
                             </a>
@@ -28,31 +33,45 @@
 
                                 </tr>
                             </thead>
-                            @{var row = 1;}
-                            @foreach (var item in Model.Item2)
-                            {
-
-                                <tr class="text-center">
-                                    <td>@(row++)</td>
-                                    <td>@item.Users.FullName</td>
-                                    <td>@item.Status.ToDisplay()</td>
-                                    <td>
-                                        @if (item.MeetingTimeId != null)
-                                        {
-                                            <span>@item.MeetingTimes.Start.ToLongPersianDateTimeString() --- @item.MeetingTimes.End.ToLongPersianDateTimeString()</span>
-                                        }
-                                        else
-                                        {
-                                            <span>---</span>
-                                        }
-                                    </td>
-                                    <td>@item.Vote</td>
-
-                                </tr>
-                            }
                             <tbody>
+                                @{var row = 1;}
+                                @foreach (var item in Model.Item2)
+                                {
+
+                                    <tr class="text-center">
+                                        <td>@(row++)</td>
+                                        <td>@item.Users.FullName</td>
+                                        <td>@item.Status.ToDisplay()</td>
+                                        <td>
+                                            @if (item.IsVote)
+                                            {
+                                                <span>
+                                                    <ul class="list-item">
+                                                        @{ var times = MeetingTimesRepository.GetTimeByTimeIds(item.TimeIds);}
+                                                        @if (times != null)
+                                                        {
+                                                            foreach (var time in times)
+                                                            {
+                                                                <li>@time</li>
+                                                            }
+                                                        }
+                                                    </ul>
+                                                </span>
+                                            }
+                                            else
+                                            {
+                                                <span>---</span>
+                                            }
+                                        </td>
+                                        <td>@item.Vote</td>
+
+                                    </tr>
+                                }
+
                             </tbody>
+
                         </table>
+                   <a class="btn btn-block btn-danger" href="/">بازگشت</a>
                     </div>
                 </div><!-- end col -->
             </div>
@@ -70,48 +89,56 @@
         </button>
         <h4 class="custom-modal-title">ثبت و اعلام نظر برای این جلسه </h4>
         <div class="custom-modal-text">
-            <div class="row">
-                <h4 class="header-title m-t-0 m-b-30">انتخاب زمان پیشنهادی</h4>
+            @if (!Model.Item3.IsVote)
+            {
+                <div class="row">
+                    <h4 class="header-title m-t-0 m-b-30">انتخاب زمان پیشنهادی</h4>
 
-                <table id="datatable-keytable" class="table table-striped table-bordered">
-                    <thead>
-                        <tr>
-                            <th class="text-center" width="1">#</th>
-                            <th class="text-center" width="200">تاریخ شروع جلسه</th>
-                            <th class="text-center" width="300">تاریخ پایان جلسه</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach (var item in Model.Item1)
-                        {
-
-                            <tr class="text-center">
-                                <td><input type="radio" name="MeetingTimeId" value="@item.Id" /></td>
-                                <td>@item.Start.ToLongPersianDateTimeString()</td>
-                                <td>@item.End.ToLongPersianDateTimeString()</td>
-
+                    <table id="datatable-keytable" class="table table-striped table-bordered">
+                        <thead>
+                            <tr>
+                                <th class="text-center" width="1">#</th>
+                                <th class="text-center" width="200">تاریخ شروع جلسه</th>
+                                <th class="text-center" width="300">تاریخ پایان جلسه</th>
                             </tr>
-                        }
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model.Item1)
+                            {
 
-                    </tbody>
-                </table>
+                                <tr class="text-center">
+                                    <td><input type="checkbox" value="@item.Id" /></td>
+                                    <td>@item.Start.ToLongPersianDateTimeString()</td>
+                                    <td>@item.End.ToLongPersianDateTimeString()</td>
+                                </tr>
+                            }
 
-               <div class="col-md-12">
-                   <label>نظر</label>
-                   <textarea class="form-control" name="Vote"></textarea>
-               </div>
-               <input type="hidden" name="MeetingId" value="@ViewBag.MeetingId" />
-            </div>
-            <ul class="pager wizard m-b-0">
-                <li class="next row">
-                    <div class="col-md-6">
-                        <button class="btn btn-primary btn-block waves-effect waves-light" name="Status" value="Accept" type="submit">تایید کردن</button>
+                        </tbody>
+                    </table>
+
+                    <div class="col-md-12">
+                        <label>نظر</label>
+                        <textarea required class="form-control" name="Vote"></textarea>
                     </div>
-                    <div class="col-md-6">
-                        <button class="btn btn-danger btn-block waves-effect waves-light" name="Status" value="Reject"  type="submit">رد کردن</button>
-                    </div>
-                </li>
-            </ul>
+                    <input type="hidden" name="MeetingId" value="@ViewBag.MeetingId" />
+                </div>
+                <ul class="pager wizard m-b-0">
+                    <li class="next row">
+                        <div class="col-md-6">
+                            <button class="btn btn-primary btn-block waves-effect waves-light" id="Accept" name="Status" value="@DataLayer.SSOT.MeetingUserStatus.Accept" type="submit">تایید کردن</button>
+                        </div>
+                        <div class="col-md-6">
+                            <button class="btn btn-danger btn-block waves-effect waves-light" id="Reject" name="Status" value="@DataLayer.SSOT.MeetingUserStatus.Reject" type="submit">رد کردن</button>
+                        </div>
+                    </li>
+                </ul>
+            }
+            else
+            {
+                <div class="alert alert-danger">
+                    <span>مدیر جلسه تایم نهایی جلسه را اعلام کرده و دیگر امکان ثبت وجود ندارد</span>
+                </div>
+            }
         </div>
     </form>
 </div>
@@ -131,5 +158,33 @@
 
     </script>
 
+    <script>
+        var status = '';
 
+        $('#Accept').on('click', function () {
+            status= '@(@DataLayer.SSOT.MeetingUserStatus.Accept)'
+        })
+
+
+        $('#Reject').on('click', function () {
+            status= '@(@DataLayer.SSOT.MeetingUserStatus.Reject)'
+        })
+
+
+        $(function () {
+            $('#create-user-form').on('submit', function (e) {
+                e.preventDefault();
+
+                var checkboxs = $('input[type="checkbox"]:checked');
+                $.each(checkboxs, function (index, key) {
+                    var value = parseInt($(key).val());
+                    $(this).append("<input name='times' type='hidden' value='" + value + "'>");
+                });
+
+                $(this).append("<input name='Status' type='hidden' value='" + status + "'>");
+
+                $('#create-user-form').unbind('submit').submit();
+            });
+        })
+    </script>
 }

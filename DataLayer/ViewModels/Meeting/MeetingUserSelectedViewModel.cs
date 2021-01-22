@@ -11,7 +11,7 @@ namespace DataLayer.ViewModels.Meeting
 
         public int MeetingId { get; set; }
 
-        public int? MeetingTimeId { get; set; }
+        public string TimeIds { get; set; }
 
         public string Vote { get; set; }
 

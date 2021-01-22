@@ -1,5 +1,10 @@
 ﻿@model List<Meetings>
-
+@inject ServiceLayer.Repositories.Meeting.MeetingTimesRepository MeetingTimesRepository
+<style>
+    li {
+        list-style-type: none;
+    }
+</style>
 <div class="content-page">
     <div class="content">
         <div class="container">
@@ -19,9 +24,11 @@
                             <thead>
                                 <tr>
                                     <th class="text-center" width="1">ردیف</th>
-                                    <th class="text-center" width="200">عنوان جلسه</th>
-                                    <th class="text-center" width="300">توضیحات جلسه</th>
-                                    <th class="text-center" width="130">تاریخ ثبت</th>
+                                    <th class="text-center" width="100">عنوان جلسه</th>
+                                    <th class="text-center" width="200">توضیحات جلسه</th>
+                                    <th class="text-center" width="75">تاریخ ثبت</th>
+                                    <th class="text-center" width="400">تاریخ برگذاری جلسه</th>
+                                    <th class="text-center" width="100">نظر مدیر جلسه</th>
                                     <th class="text-center" width="10">جزئیات جلسه</th>
                                 </tr>
                             </thead>
@@ -33,9 +40,39 @@
                                     <td>@item.Title</td>
                                     <td>@item.Description</td>
                                     <td>
-                                        @item.CreateDate.ToPersianDateTextify()
+                                        @item.CreateDate.ToPersianDay()
                                     </td>
-                                    
+                                    <td>
+                                        @if (item.IsVote)
+                                        {
+                                            <span>
+                                                <ul class="list-item">
+                                                    @{ var times = MeetingTimesRepository.GetTimeByTimeIds(item.TimeIds);}
+                                                    @if (times != null)
+                                                    {
+                                                        foreach (var time in times)
+                                                        {
+                                                            <li>@time</li>
+                                                        }
+                                                    }
+                                                </ul>
+                                            </span>
+                                        }
+                                        else
+                                        {
+                                            <span>---</span>
+                                        }
+                                    </td>
+                                    <td>
+                                        @if (item.IsVote)
+                                        {
+                                            <span>@item.Vote</span>
+                                        }
+                                        else
+                                        {
+                                            <span>---</span>
+                                        }
+                                    </td>
                                     <td>
                                         <a asp-action="Detail" asp-controller="Home" asp-route-id="@item.Id">مشاهده</a>
                                     </td>

@@ -1,6 +1,7 @@
 ﻿@using Microsoft.AspNetCore.Html
 
-
+<link href="~/lib/sweetalert2/dist/sweetalert2.css" type="text/css" rel="stylesheet" />
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
 @{
     var isSuccess = TempData["ServiceResult.Message"] as string;
     var message = TempData["ServiceResult.Succeed"];

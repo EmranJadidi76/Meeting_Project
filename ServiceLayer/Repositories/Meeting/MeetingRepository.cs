@@ -44,22 +44,70 @@ namespace ServiceLayer.Repositories.Meeting
         }
 
 
-        public async Task<Tuple<IEnumerable<MeetingTimes>, IEnumerable<MeetingUsers>>> MeetingDetail(int id)
+        public async Task<Tuple<IEnumerable<MeetingTimes>, IEnumerable<MeetingUsers>, Meetings>> MeetingDetail(int id)
         {
             var times = await MeetingTimesRepository.GetListAsync(a => a.MeetingId == id);
-            var users = await MeetingUsersRepository.GetListAsync(a => a.MeetingId == id, includes: "Users,MeetingTimes");
+            var users = await MeetingUsersRepository.GetListAsync(a => a.MeetingId == id, includes: "Users");
+            var meetings = await GetByConditionAsync(a => a.Id == id);
 
-            return new Tuple<IEnumerable<MeetingTimes>, IEnumerable<MeetingUsers>>(times, users);
+            return new Tuple<IEnumerable<MeetingTimes>, IEnumerable<MeetingUsers>, Meetings>(times, users, meetings);
         }
 
         public async Task<IEnumerable<Meetings>> GetUserMeetings(int userId)
         {
             var meetingIds = await MeetingUsersRepository.ListMeetingsbyUserId(userId);
 
-            var meetings = await GetListAsync(a => meetingIds.Contains(a.Id), o => o.OrderByDescending(a => a.CreateDate), includes: "MeetingUsers,MeetingTimes");
+            var meetings = await GetListAsync(a => meetingIds.Contains(a.Id), o => o.OrderByDescending(a => a.CreateDate), includes: "MeetingUsers");
 
             return meetings;
         }
 
+        public async Task<SweetAlertExtenstion> UpdateMeeting(MeetingEditViewModel vm)
+        {
+            var model = await GetByConditionAsync(a => a.Id == vm.Id);
+
+            if (model == null)
+                return SweetAlertExtenstion.Error("اطلاعاتی با این شناسه یافت نشد");
+
+            var edit = Mapper.Map(vm, model);
+
+            await UpdateAsync(edit);
+
+            return SweetAlertExtenstion.Ok();
+        }
+
+        public async Task<SweetAlertExtenstion> ManagerSelectTime(MeetingManagerSelectedViewModel vm)
+        {
+            var model = await GetByConditionAsync(a => a.Id == vm.Id);
+
+            if (model == null)
+                return SweetAlertExtenstion.Error("خطایی در سرور رخ داده است لطفا مجددا تلاش بفرمایید");
+
+
+            var updated = Mapper.Map(vm, model);
+
+            await UpdateAsync(updated);
+
+            return SweetAlertExtenstion.Ok();
+        }
+
+        public async Task<SweetAlertExtenstion> DeleteAll(int id)
+        {
+            var model = await GetByConditionAsync(a => a.Id == id, includes: "MeetingUsers,MeetingTimes");
+
+            if (model.MeetingUsers.Any())
+            {
+                await MeetingUsersRepository.DeleteRangeAsync(model.MeetingUsers);
+            }
+
+            if (model.MeetingTimes.Any())
+            {
+                await MeetingTimesRepository.DeleteRangeAsync(model.MeetingTimes);
+            }
+
+            await DeleteAsync(model);
+
+            return SweetAlertExtenstion.Ok();
+        }
     }
 }

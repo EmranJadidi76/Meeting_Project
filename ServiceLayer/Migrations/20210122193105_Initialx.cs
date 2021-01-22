@@ -2,38 +2,32 @@
 
 namespace ServiceLayer.Migrations
 {
-    public partial class MeetingsUserIsVote : Migration
+    public partial class Initialx : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropForeignKey(
-                name: "FK_MeetingUsers_Meetings_MeetingsId",
+                name: "FK_MeetingUsers_AspNetUsers_UsersId",
                 table: "MeetingUsers");
 
             migrationBuilder.DropIndex(
-                name: "IX_MeetingUsers_MeetingsId",
+                name: "IX_MeetingUsers_UsersId",
                 table: "MeetingUsers");
 
             migrationBuilder.DropColumn(
-                name: "MeetingsId",
+                name: "UsersId",
                 table: "MeetingUsers");
 
-            migrationBuilder.AddColumn<bool>(
-                name: "IsVote",
-                table: "MeetingUsers",
-                nullable: false,
-                defaultValue: false);
-
             migrationBuilder.CreateIndex(
-                name: "IX_MeetingUsers_MeetingId",
+                name: "IX_MeetingUsers_UserId",
                 table: "MeetingUsers",
-                column: "MeetingId");
+                column: "UserId");
 
             migrationBuilder.AddForeignKey(
-                name: "FK_MeetingUsers_Meetings_MeetingId",
+                name: "FK_MeetingUsers_AspNetUsers_UserId",
                 table: "MeetingUsers",
-                column: "MeetingId",
-                principalTable: "Meetings",
+                column: "UserId",
+                principalTable: "AspNetUsers",
                 principalColumn: "Id",
                 onDelete: ReferentialAction.Cascade);
         }
@@ -41,32 +35,28 @@ namespace ServiceLayer.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropForeignKey(
-                name: "FK_MeetingUsers_Meetings_MeetingId",
+                name: "FK_MeetingUsers_AspNetUsers_UserId",
                 table: "MeetingUsers");
 
             migrationBuilder.DropIndex(
-                name: "IX_MeetingUsers_MeetingId",
-                table: "MeetingUsers");
-
-            migrationBuilder.DropColumn(
-                name: "IsVote",
+                name: "IX_MeetingUsers_UserId",
                 table: "MeetingUsers");
 
             migrationBuilder.AddColumn<int>(
-                name: "MeetingsId",
+                name: "UsersId",
                 table: "MeetingUsers",
                 nullable: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_MeetingUsers_MeetingsId",
+                name: "IX_MeetingUsers_UsersId",
                 table: "MeetingUsers",
-                column: "MeetingsId");
+                column: "UsersId");
 
             migrationBuilder.AddForeignKey(
-                name: "FK_MeetingUsers_Meetings_MeetingsId",
+                name: "FK_MeetingUsers_AspNetUsers_UsersId",
                 table: "MeetingUsers",
-                column: "MeetingsId",
-                principalTable: "Meetings",
+                column: "UsersId",
+                principalTable: "AspNetUsers",
                 principalColumn: "Id",
                 onDelete: ReferentialAction.Restrict);
         }

@@ -10,8 +10,8 @@ using ServiceLayer;
 namespace ServiceLayer.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    [Migration("20210121200552_init")]
-    partial class init
+    [Migration("20210122202239_Initialxx")]
+    partial class Initialxx
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -33,11 +33,17 @@ namespace ServiceLayer.Migrations
 
                     b.Property<bool>("IsActive");
 
-                    b.Property<DateTime?>("MeetingDate");
+                    b.Property<DateTime?>("MeetingEnd");
+
+                    b.Property<DateTime?>("MeetingStart");
+
+                    b.Property<string>("TimeIds");
 
                     b.Property<string>("Title");
 
                     b.Property<int>("UserId");
+
+                    b.Property<string>("Vote");
 
                     b.HasKey("Id");
 
@@ -71,13 +77,13 @@ namespace ServiceLayer.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+                    b.Property<bool>("IsVote");
+
                     b.Property<int>("MeetingId");
 
-                    b.Property<int?>("MeetingTimeId");
-
-                    b.Property<int?>("MeetingsId");
-
                     b.Property<int?>("Status");
+
+                    b.Property<string>("TimeIds");
 
                     b.Property<int>("UserId");
 
@@ -85,9 +91,7 @@ namespace ServiceLayer.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("MeetingTimeId");
-
-                    b.HasIndex("MeetingsId");
+                    b.HasIndex("MeetingId");
 
                     b.HasIndex("UserId");
 
@@ -286,13 +290,10 @@ namespace ServiceLayer.Migrations
 
             modelBuilder.Entity("DataLayer.Entities.Meeting.MeetingUsers", b =>
                 {
-                    b.HasOne("DataLayer.Entities.Meeting.MeetingTimes", "MeetingTimes")
-                        .WithMany()
-                        .HasForeignKey("MeetingTimeId");
-
-                    b.HasOne("DataLayer.Entities.Meeting.Meetings")
+                    b.HasOne("DataLayer.Entities.Meeting.Meetings", "Meetings")
                         .WithMany("MeetingUsers")
-                        .HasForeignKey("MeetingsId");
+                        .HasForeignKey("MeetingId")
+                        .OnDelete(DeleteBehavior.Cascade);
 
                     b.HasOne("DataLayer.Entities.User.Users", "Users")
                         .WithMany("MeetingUsers")

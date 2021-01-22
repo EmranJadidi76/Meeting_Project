@@ -1,6 +1,7 @@
 ﻿using Core.Utilities;
 using DataLayer.ViewModels.Meeting;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 using ServiceLayer.Repositories.Meeting;
 using ServiceLayer.Repositories.User;
 using System;
@@ -49,8 +50,39 @@ namespace Meeting_Project.Controllers
             }
 
             model.UserId = UserId.Value;
+            await _meetingRepository.NewMeeting(model, vm, users);
+            TempData.AddResult(SweetAlertExtenstion.Ok());
 
-            TempData.AddResult(await _meetingRepository.NewMeeting(model, vm, users));
+            return RedirectToAction(nameof(Index));
+        }
+
+        public async Task<IActionResult> Edit(int id)
+        {
+            var model = await _meetingRepository.GetByConditionAsync(a => a.Id == id);
+
+            if(model == null)
+            {
+                TempData.AddResult(SweetAlertExtenstion.Error("اطلاعاتی با این شناسه یافت نشد"));
+
+                return RedirectToAction(nameof(Index));
+            }
+
+            if(model.IsVote)
+            {
+                TempData.AddResult(SweetAlertExtenstion.Error("این جلسه به دلیل ثبت نهایی قابل ویرایش نمی باشد"));
+
+                return RedirectToAction(nameof(Index));
+            }
+
+            return View(model);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Edit(MeetingEditViewModel vm)
+        {
+            var model = await _meetingRepository.UpdateMeeting(vm);
+
+            TempData.AddResult(model);
 
             return RedirectToAction(nameof(Index));
         }
@@ -71,10 +103,17 @@ namespace Meeting_Project.Controllers
             return View(model);
         }
 
-        public async Task<IActionResult> UserSelected(MeetingUserSelectedViewModel vm)
+        public async Task<IActionResult> UserSelected(MeetingUserSelectedViewModel vm,List<int> times)
         {
-            vm.UserId = this.UserId.Value;
+            if (!times.Any() && vm.Status == DataLayer.SSOT.MeetingUserStatus.Accept) 
+            {
+                TempData.AddResult(SweetAlertExtenstion.Error("لطفا تایم جلسه را انتخاب کنید"));
+                return RedirectToAction("Detail", "Home", new { id = vm.MeetingId });
+            }
 
+            vm.UserId = this.UserId.Value;
+            vm.TimeIds = JsonConvert.SerializeObject(times);
+            
             var model = await _meetingRepository.MeetingUsersRepository.UserSelectedTime(vm);
 
             TempData.AddResult(model);
@@ -83,11 +122,29 @@ namespace Meeting_Project.Controllers
         }
 
 
-        public async Task<IActionResult> MeetingManagerSelectTime(MeetingManagerSelectedViewModel vm)
+        public async Task<IActionResult> MeetingManagerSelectTime(MeetingManagerSelectedViewModel vm, List<int> times)
         {
+            if (!times.Any() )
+            {
+                TempData.AddResult(SweetAlertExtenstion.Error("لطفا تایم جلسه را انتخاب کنید"));
+                return RedirectToAction(nameof(Detail), new { id = vm.Id });
+            }
 
-            return View();
+            vm.TimeIds = JsonConvert.SerializeObject(times);
+
+            var model = await _meetingRepository.ManagerSelectTime(vm);
+
+            TempData.AddResult(SweetAlertExtenstion.Ok());
+
+            return RedirectToAction(nameof(Detail), new { id = vm.Id });
         }
 
+
+        public async Task<IActionResult> DeleteMeeting(int id)
+        {
+            var model = await _meetingRepository.DeleteAll(id);
+
+            return RedirectToAction(nameof(Index));
+        }
     }
 }

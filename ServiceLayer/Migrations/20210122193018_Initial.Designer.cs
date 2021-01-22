@@ -10,8 +10,8 @@ using ServiceLayer;
 namespace ServiceLayer.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    [Migration("20210122085402_MeetingDSSS")]
-    partial class MeetingDSSS
+    [Migration("20210122193018_Initial")]
+    partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -36,6 +36,8 @@ namespace ServiceLayer.Migrations
                     b.Property<DateTime?>("MeetingEnd");
 
                     b.Property<DateTime?>("MeetingStart");
+
+                    b.Property<string>("TimeIds");
 
                     b.Property<string>("Title");
 
@@ -77,11 +79,13 @@ namespace ServiceLayer.Migrations
 
                     b.Property<int>("MeetingId");
 
-                    b.Property<int?>("MeetingTimeId");
-
                     b.Property<int?>("Status");
 
+                    b.Property<string>("TimeIds");
+
                     b.Property<int>("UserId");
+
+                    b.Property<int?>("UsersId");
 
                     b.Property<string>("Vote");
 
@@ -89,9 +93,7 @@ namespace ServiceLayer.Migrations
 
                     b.HasIndex("MeetingId");
 
-                    b.HasIndex("MeetingTimeId");
-
-                    b.HasIndex("UserId");
+                    b.HasIndex("UsersId");
 
                     b.ToTable("MeetingUsers");
                 });
@@ -293,14 +295,9 @@ namespace ServiceLayer.Migrations
                         .HasForeignKey("MeetingId")
                         .OnDelete(DeleteBehavior.Cascade);
 
-                    b.HasOne("DataLayer.Entities.Meeting.MeetingTimes", "MeetingTimes")
-                        .WithMany()
-                        .HasForeignKey("MeetingTimeId");
-
                     b.HasOne("DataLayer.Entities.User.Users", "Users")
                         .WithMany("MeetingUsers")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .HasForeignKey("UsersId");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<int>", b =>

@@ -17,10 +17,15 @@ namespace DataLayer.Entities.Meeting
         public DateTime? MeetingStart { get; set; }
         public DateTime? MeetingEnd { get; set; }
 
+        public string TimeIds { get; set; }
 
         public DateTime CreateDate { get; set; }
 
         public bool IsActive { get; set; }
+
+        public string Vote { get; set; }
+
+        public bool IsVote { get; set; }
 
         [ForeignKey(nameof(UserId))]
         public virtual Users User{ get; set; }
