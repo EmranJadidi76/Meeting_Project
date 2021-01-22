@@ -115,8 +115,16 @@ namespace Meeting_Project.Controllers
                 }
                 else
                 {
-                    TempData.AddResult(SweetAlertExtenstion.Error("چنین کاربری از قبل وجود دارد"));
-                    return View(model);
+                    await _userRepository.UserManager.ChangePasswordAsync(userResult, userResult.NationalCode, model.Password);
+
+                    userResult.IsModerator = true;
+                    userResult.FirstName = model.FirstName;
+                    userResult.LastName = model.LastName;
+
+                    await _userRepository.UserManager.UpdateAsync(userResult);
+
+                    await _userRepository.SignInManager.SignInAsync(userResult, false);
+                    return Redirect("/");
                 }
             }
 

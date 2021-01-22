@@ -18,7 +18,8 @@ namespace ServiceLayer.Mappers
             CreateMap<Users, CreateUserViewModel>().ReverseMap()
                  .ForMember(a => a.UserName, option => { option.MapFrom(b => b.NationalCode); })
                  .ForMember(a => a.IsActive, option => option.UseValue(true))
-                 .ForMember(a => a.IsModerator, option => option.UseValue(true));
+                 .ForMember(a => a.IsModerator, option => option.UseValue(true))
+                 .ForMember(a => a.IsModerator, option => option.UseValue(false));
         }
     }
 }

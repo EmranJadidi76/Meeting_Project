@@ -31,6 +31,8 @@ namespace Meeting_Project
 
             services.AddCustomIdentity(_siteSetting.IdentitySettings);
 
+            services.ClaimFactoryConfiguration();
+
             services.AddAuthentication()
              .Services.ConfigureApplicationCookie(options =>
              {

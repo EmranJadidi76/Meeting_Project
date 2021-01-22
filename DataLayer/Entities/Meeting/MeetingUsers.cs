@@ -15,6 +15,8 @@ namespace DataLayer.Entities.Meeting
 
         public string Vote { get; set; }
 
+        public bool IsVote { get; set; }
+
         public int? MeetingTimeId { get; set; }
 
         public MeetingUserStatus? Status { get; set; }

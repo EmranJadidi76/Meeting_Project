@@ -1,14 +1,13 @@
 ﻿
 
+@if (ViewBag.IsModerator == true)
+{
+    <li>
+        <a href="/UserManage" class="waves-effect"><i class="zmdi zmdi-view-dashboard"></i> <span> لیست کاربران </span> </a>
+    </li>
 
 
-
-
-<li>
-    <a href="/UserManage" class="waves-effect"><i class="zmdi zmdi-view-dashboard"></i> <span> لیست کاربران </span> </a>
-</li>
-
-
-<li>
-    <a href="/Meeting" class="waves-effect"><i class="zmdi zmdi-view-dashboard"></i> <span> مدیریت جلسات </span> </a>
-</li>
+    <li>
+        <a href="/Meeting" class="waves-effect"><i class="zmdi zmdi-view-dashboard"></i> <span> مدیریت جلسات </span> </a>
+    </li>
+}

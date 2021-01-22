@@ -66,6 +66,8 @@ namespace Meeting_Project.Controllers
         {
             var model = await _meetingRepository.MeetingDetail(id);
 
+            ViewBag.MeetingId = id;
+
             return View(model);
         }
 
@@ -77,7 +79,15 @@ namespace Meeting_Project.Controllers
 
             TempData.AddResult(model);
 
-            return RedirectToAction("Detail", "Home", new { id = vm.MeetingId});
+            return RedirectToAction("Detail", "Home", new { id = vm.MeetingId });
         }
+
+
+        public async Task<IActionResult> MeetingManagerSelectTime(MeetingManagerSelectedViewModel vm)
+        {
+
+            return View();
+        }
+
     }
 }

@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Core.Utilities;
+using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,6 +12,10 @@ namespace Meeting_Project.ViewComponents
 
         public IViewComponentResult Invoke()
         {
+            var isModerator = bool.Parse(User.Identity.FindFirstValue("IsMod"));
+
+            ViewBag.IsModerator = isModerator;
+
             return View();
         }
     }

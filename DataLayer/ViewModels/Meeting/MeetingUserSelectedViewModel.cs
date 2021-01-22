@@ -15,6 +15,8 @@ namespace DataLayer.ViewModels.Meeting
 
         public string Vote { get; set; }
 
+        public bool IsVote { get; set; } = true;
+
         public MeetingUserStatus? Status { get; set; }
     }
 }

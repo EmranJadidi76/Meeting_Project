@@ -14,5 +14,7 @@ namespace DataLayer.ViewModels.User
 
         [Required()]
         public string NationalCode { get; set; }
+
+
     }
 }
