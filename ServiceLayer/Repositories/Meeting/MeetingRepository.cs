@@ -57,7 +57,7 @@ namespace ServiceLayer.Repositories.Meeting
         {
             var meetingIds = await MeetingUsersRepository.ListMeetingsbyUserId(userId);
 
-            var meetings = await GetListAsync(a => meetingIds.Contains(a.Id), o => o.OrderByDescending(a => a.CreateDate), includes: "MeetingUsers");
+            var meetings = await GetListAsync(a => meetingIds.Contains(a.Id), o => o.OrderByDescending(a => a.CreateDate), includes: "User,MeetingUsers");
 
             return meetings;
         }

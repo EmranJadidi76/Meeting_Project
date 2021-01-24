@@ -24,6 +24,7 @@
                             <thead>
                                 <tr>
                                     <th class="text-center" width="1">ردیف</th>
+                                    <th class="text-center" width="75">نام مدیر جلسه</th>
                                     <th class="text-center" width="100">عنوان جلسه</th>
                                     <th class="text-center" width="200">توضیحات جلسه</th>
                                     <th class="text-center" width="75">تاریخ ثبت</th>
@@ -37,6 +38,7 @@
                             {
                                 <tr class="text-center">
                                     <td>@(row++)</td>
+                                    <td>@item.User.FullName</td>
                                     <td>@item.Title</td>
                                     <td>@item.Description</td>
                                     <td>
