@@ -14,8 +14,8 @@ namespace DataLayer.Entities.Meeting
 
         public int UserId { get; set; }
 
-        public DateTime? MeetingStart { get; set; }
-        public DateTime? MeetingEnd { get; set; }
+        //public DateTime? MeetingStart { get; set; }
+        //public DateTime? MeetingEnd { get; set; }
 
         public string TimeIds { get; set; }
 

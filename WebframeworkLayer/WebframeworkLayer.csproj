@@ -4,15 +4,14 @@
 		<TargetFramework>netcoreapp2.2</TargetFramework>
 	</PropertyGroup>
 
+
 	<ItemGroup>
 		<PackageReference Include="DNTPersianUtils.Core" Version="3.6.2" />
 		<PackageReference Include="Microsoft.AspNet.SignalR" Version="2.4.1" />
 		<PackageReference Include="Microsoft.AspNet.SignalR.Client" Version="2.4.1" />
 		<PackageReference Include="Microsoft.AspNetCore.Identity" Version="2.1.1" />
 		<PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
-		<PackageReference Include="PayamakPanel.Core" Version="1.0.0" />
 	</ItemGroup>
-
 
 	<ItemGroup>
 		<ProjectReference Include="..\ServiceLayer\ServiceLayer.csproj" />
