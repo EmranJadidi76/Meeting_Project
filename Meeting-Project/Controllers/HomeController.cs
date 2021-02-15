@@ -33,8 +33,7 @@ namespace Meeting_Project.Controllers
         {
             var model = await _meetingRepository.MeetingDetail(id);
 
-            if (model != null )
-                await _meetingRepository.MeetingUsersRepository.UpdateStatus(id, MeetingUserStatus.See);
+           
 
             ViewBag.MeetingId = id;
 

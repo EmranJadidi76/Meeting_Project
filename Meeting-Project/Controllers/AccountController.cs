@@ -115,16 +115,17 @@ namespace Meeting_Project.Controllers
                 }
                 else
                 {
-                    await _userRepository.UserManager.ChangePasswordAsync(userResult, userResult.NationalCode, model.Password);
+                    //await _userRepository.UserManager.ChangePasswordAsync(userResult, userResult.NationalCode, model.Password);
 
-                    userResult.IsModerator = true;
-                    userResult.FirstName = model.FirstName;
-                    userResult.LastName = model.LastName;
+                    //userResult.IsModerator = true;
+                    //userResult.FirstName = model.FirstName;
+                    //userResult.LastName = model.LastName;
 
-                    await _userRepository.UserManager.UpdateAsync(userResult);
+                    //await _userRepository.UserManager.UpdateAsync(userResult);
 
-                    await _userRepository.SignInManager.SignInAsync(userResult, false);
-                    return Redirect("/");
+                    //await _userRepository.SignInManager.SignInAsync(userResult, false);
+                    TempData.AddResult(SweetAlertExtenstion.Error("این کد ملی قبلا ثبت شده است"));
+                    return View(model);
                 }
             }
 
