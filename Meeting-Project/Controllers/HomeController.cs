@@ -31,7 +31,7 @@ namespace Meeting_Project.Controllers
 
         public async Task<IActionResult> Detail(int id)
         {
-            var model = await _meetingRepository.MeetingDetail(id);
+            var model = await _meetingRepository.MeetingDetail(id,this.UserId??0);
 
            
 

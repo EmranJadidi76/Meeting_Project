@@ -52,9 +52,9 @@ namespace ServiceLayer.Repositories.Meeting
         }
 
 
-        public async Task UpdateStatusSee(int meetingId, MeetingUserStatus status)
+        public async Task UpdateStatusSee(int meetingId,int userId, MeetingUserStatus status)
         {
-            var model = await GetByConditionAsync(a => a.MeetingId == meetingId );
+            var model = await GetByConditionAsync(a => a.MeetingId == meetingId && a.UserId == userId);
 
             if (model == null) return;
 
