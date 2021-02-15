@@ -32,6 +32,8 @@ namespace DataLayer.Entities.User
 
         public string NationalCode { get; set; }
 
+        public int? ParentId { get; set; }
+
         public ICollection<MeetingUsers> MeetingUsers { get; set; }
         public ICollection<Meetings> Meetings { get; set; }
     }
