@@ -21,6 +21,8 @@ namespace DataLayer.Entities.Meeting
 
         public MeetingUserStatus? Status { get; set; }
 
+     
+
         [ForeignKey(nameof(UserId))]
         public virtual Users Users { get; set; }
 

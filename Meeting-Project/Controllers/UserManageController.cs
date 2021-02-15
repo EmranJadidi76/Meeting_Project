@@ -40,6 +40,7 @@ namespace Meeting_Project.Controllers
             {
                 var user = AutoMapper.Mapper.Map<Users>(model);
 
+                user.ParentId = this.UserId;
                 var userResult = await _userRepository.UserManager.FindByNameAsync(model.NationalCode);
 
                 if (userResult == null)
@@ -74,7 +75,7 @@ namespace Meeting_Project.Controllers
             if (ModelState.IsValid)
             {
                 var user = AutoMapper.Mapper.Map<Users>(model);
-
+                user.ParentId = this.UserId;
                 var userResult = await _userRepository.UserManager.FindByNameAsync(model.NationalCode);
 
                 if (userResult == null)

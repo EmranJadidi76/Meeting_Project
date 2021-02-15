@@ -25,7 +25,7 @@ namespace ServiceLayer.Repositories.User
 
         public async Task<IEnumerable<Users>> GetAllUsers(int? userId)
         {
-            var model = await GetListAsync(a=> a.Id != userId);
+            var model = await GetListAsync(a=> a.Id != userId && a.ParentId == userId);
 
             return model;
         }
