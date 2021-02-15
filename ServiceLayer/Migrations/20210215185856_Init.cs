@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace ServiceLayer.Migrations
 {
-    public partial class Initial : Migration
+    public partial class Init : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -49,7 +49,8 @@ namespace ServiceLayer.Migrations
                     CreateDate = table.Column<DateTime>(nullable: true),
                     IsActive = table.Column<bool>(nullable: false),
                     IsModerator = table.Column<bool>(nullable: false),
-                    NationalCode = table.Column<string>(nullable: true)
+                    NationalCode = table.Column<string>(nullable: true),
+                    ParentId = table.Column<int>(nullable: true)
                 },
                 constraints: table =>
                 {
@@ -171,11 +172,11 @@ namespace ServiceLayer.Migrations
                     Title = table.Column<string>(nullable: true),
                     Description = table.Column<string>(nullable: true),
                     UserId = table.Column<int>(nullable: false),
-                    MeetingStart = table.Column<DateTime>(nullable: true),
-                    MeetingEnd = table.Column<DateTime>(nullable: true),
                     TimeIds = table.Column<string>(nullable: true),
                     CreateDate = table.Column<DateTime>(nullable: false),
-                    IsActive = table.Column<bool>(nullable: false)
+                    IsActive = table.Column<bool>(nullable: false),
+                    Vote = table.Column<string>(nullable: true),
+                    IsVote = table.Column<bool>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -220,8 +221,7 @@ namespace ServiceLayer.Migrations
                     Vote = table.Column<string>(nullable: true),
                     IsVote = table.Column<bool>(nullable: false),
                     TimeIds = table.Column<string>(nullable: true),
-                    Status = table.Column<int>(nullable: true),
-                    UsersId = table.Column<int>(nullable: true)
+                    Status = table.Column<int>(nullable: true)
                 },
                 constraints: table =>
                 {
@@ -231,13 +231,13 @@ namespace ServiceLayer.Migrations
                         column: x => x.MeetingId,
                         principalTable: "Meetings",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.NoAction);
                     table.ForeignKey(
-                        name: "FK_MeetingUsers_AspNetUsers_UsersId",
-                        column: x => x.UsersId,
+                        name: "FK_MeetingUsers_AspNetUsers_UserId",
+                        column: x => x.UserId,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.NoAction);
                 });
 
             migrationBuilder.CreateIndex(
@@ -295,9 +295,9 @@ namespace ServiceLayer.Migrations
                 column: "MeetingId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_MeetingUsers_UsersId",
+                name: "IX_MeetingUsers_UserId",
                 table: "MeetingUsers",
-                column: "UsersId");
+                column: "UserId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)

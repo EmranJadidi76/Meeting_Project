@@ -5,6 +5,17 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Migrations\20210215184925_Init.cs" />
+    <Compile Remove="Migrations\20210215184925_Init.Designer.cs" />
+    <Compile Remove="Migrations\20210215185106_Init.cs" />
+    <Compile Remove="Migrations\20210215185106_Init.Designer.cs" />
+    <Compile Remove="Migrations\20210215185231_Init.cs" />
+    <Compile Remove="Migrations\20210215185231_Init.Designer.cs" />
+    <Compile Remove="Migrations\20210215185354_Init.cs" />
+    <Compile Remove="Migrations\20210215185354_Init.Designer.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\DataLayer\DataLayer.csproj" />
   </ItemGroup>
 
