@@ -47,7 +47,21 @@ namespace ServiceLayer.Repositories.Meeting
 
         public async Task<Tuple<IEnumerable<MeetingTimes>, IEnumerable<MeetingUsers>, Meetings>> MeetingDetail(int id)
         {
-            await MeetingUsersRepository.UpdateStatusSee(id, MeetingUserStatus.See);
+            //await MeetingUsersRepository.UpdateStatusSee(id, MeetingUserStatus.See);
+
+            var times = await MeetingTimesRepository.GetListAsync(a => a.MeetingId == id);
+            var users = await MeetingUsersRepository.GetListAsync(a => a.MeetingId == id, includes: "Users");
+            var meetings = await GetByConditionAsync(a => a.Id == id);
+
+
+
+            return new Tuple<IEnumerable<MeetingTimes>, IEnumerable<MeetingUsers>, Meetings>(times, users, meetings);
+        }
+
+
+        public async Task<Tuple<IEnumerable<MeetingTimes>, IEnumerable<MeetingUsers>, Meetings>> MeetingDetail(int id,int userId)
+        {
+            await MeetingUsersRepository.UpdateStatusSee(id, userId, MeetingUserStatus.See );
 
             var times = await MeetingTimesRepository.GetListAsync(a => a.MeetingId == id);
             var users = await MeetingUsersRepository.GetListAsync(a => a.MeetingId == id, includes: "Users");

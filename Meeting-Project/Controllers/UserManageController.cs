@@ -45,7 +45,7 @@ namespace Meeting_Project.Controllers
 
                 if (userResult == null)
                 {
-                    var resultCreatUser = await _userRepository.UserManager.CreateAsync(user, model.NationalCode);
+                    var resultCreatUser = await _userRepository.UserManager.CreateAsync(user, model.Password);
 
                     if (resultCreatUser.Succeeded)
                     {
@@ -80,7 +80,7 @@ namespace Meeting_Project.Controllers
 
                 if (userResult == null)
                 {
-                    var resultCreatUser = await _userRepository.UserManager.CreateAsync(user, model.NationalCode);
+                    var resultCreatUser = await _userRepository.UserManager.CreateAsync(user, model.Password);
 
                     if (resultCreatUser.Succeeded)
                     {
