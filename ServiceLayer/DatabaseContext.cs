@@ -21,7 +21,7 @@ namespace ServiceLayer
 
         public DbSet<MeetingUsers> MeetingUsers { get; set; }
 
-        public DbSet<MeetingTimes> MeetingTimes { get; set; }
+       public DbSet<MeetingTimes> MeetingTimes { get; set; }
 
 
 

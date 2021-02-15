@@ -10,49 +10,16 @@ using ServiceLayer;
 namespace ServiceLayer.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    [Migration("20210215175824_modifUsers")]
-    partial class modifUsers
+    [Migration("20210215185856_Init")]
+    partial class Init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "2.1.4-rtm-31024")
+                .HasAnnotation("ProductVersion", "2.2.6-servicing-10079")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-            modelBuilder.Entity("DataLayer.Entities.Meeting.Meetings", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<DateTime>("CreateDate");
-
-                    b.Property<string>("Description");
-
-                    b.Property<bool>("IsActive");
-
-                    b.Property<bool>("IsVote");
-
-                    b.Property<DateTime?>("MeetingEnd");
-
-                    b.Property<DateTime?>("MeetingStart");
-
-                    b.Property<string>("TimeIds");
-
-                    b.Property<string>("Title");
-
-                    b.Property<int>("UserId");
-
-                    b.Property<string>("Vote");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("Meetings");
-                });
 
             modelBuilder.Entity("DataLayer.Entities.Meeting.MeetingTimes", b =>
                 {
@@ -83,8 +50,6 @@ namespace ServiceLayer.Migrations
 
                     b.Property<int>("MeetingId");
 
-                    b.Property<int?>("ParentId");
-
                     b.Property<int?>("Status");
 
                     b.Property<string>("TimeIds");
@@ -100,6 +65,35 @@ namespace ServiceLayer.Migrations
                     b.HasIndex("UserId");
 
                     b.ToTable("MeetingUsers");
+                });
+
+            modelBuilder.Entity("DataLayer.Entities.Meeting.Meetings", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<DateTime>("CreateDate");
+
+                    b.Property<string>("Description");
+
+                    b.Property<bool>("IsActive");
+
+                    b.Property<bool>("IsVote");
+
+                    b.Property<string>("TimeIds");
+
+                    b.Property<string>("Title");
+
+                    b.Property<int>("UserId");
+
+                    b.Property<string>("Vote");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("Meetings");
                 });
 
             modelBuilder.Entity("DataLayer.Entities.User.Roles", b =>
@@ -278,14 +272,6 @@ namespace ServiceLayer.Migrations
                     b.ToTable("AspNetUserTokens");
                 });
 
-            modelBuilder.Entity("DataLayer.Entities.Meeting.Meetings", b =>
-                {
-                    b.HasOne("DataLayer.Entities.User.Users", "User")
-                        .WithMany("Meetings")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade);
-                });
-
             modelBuilder.Entity("DataLayer.Entities.Meeting.MeetingTimes", b =>
                 {
                     b.HasOne("DataLayer.Entities.Meeting.Meetings", "Meetings")
@@ -303,6 +289,14 @@ namespace ServiceLayer.Migrations
 
                     b.HasOne("DataLayer.Entities.User.Users", "Users")
                         .WithMany("MeetingUsers")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("DataLayer.Entities.Meeting.Meetings", b =>
+                {
+                    b.HasOne("DataLayer.Entities.User.Users", "User")
+                        .WithMany("Meetings")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });

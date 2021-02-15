@@ -77,9 +77,6 @@ namespace ServiceLayer.Migrations
 
                     b.Property<bool>("IsActive");
 
-                    b.Property<int?>("ParentId");
-
-                    b.Property<int?>("Status");
                     b.Property<bool>("IsVote");
 
                     b.Property<string>("TimeIds");
